@@ -1,6 +1,6 @@
 version: "3.1"
 services: 
-  camisetas:
+  tshirts:
     image: mysql:latest
     restart: "no"
     environment:
