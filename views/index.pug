@@ -1,0 +1,48 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Tienda de Camisetas
+  body
+    // Layout general: sidebar, main content, footer
+
+    // Barra lateral con géneros
+    aside
+      nav
+        h2 Categorías
+        ul
+          li
+            a(href="/camisetas?gender=women") Mujeres
+          li
+            a(href="/camisetas?gender=men") Hombres
+          li
+            a(href="/camisetas?gender=unisex") Unisex
+          li
+            a(href="/camisetas?gender=kids") Niño
+          li
+            a(href="/camisetas?gender=kids") Niña
+          li
+            a(href="/camisetas?gender=kids") Unisex niños
+
+    // Contenido principal
+    main
+      header
+        // Logo central que lleva al landing
+        h1
+          a(href="/") T-SHIRT STORE
+
+      section
+        h2 Bienvenid@ a nuestra tienda
+        p Explora nuestra colección de camisetas y encuentra tu estilo perfecto.
+        // Aquí podríaMOS más adelante listar camisetas destacados con un loop
+        // Ejemplo (cuando haya datos):
+        // each camiseta in camisetas
+        //   article
+        //     h3= camiseta.nombre
+        //     p Precio: #{camiseta.precio} €
+
+    // Pie de página
+    footer
+      p &copy; #{new Date().getFullYear()} T-Shirt Store - Todos los derechos reservados.
+    
