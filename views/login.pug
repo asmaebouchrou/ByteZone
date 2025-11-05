@@ -1,0 +1,25 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Iniciar sesión — T-Shirt Store
+  body
+    main
+      h1 Iniciar sesión
+
+      form(action="/auth/login" method="post")
+        div
+          label(for="email") Correo electrónico:
+          input(type="email" id="email" name="email" required)
+        div
+          label(for="password") Contraseña:
+          input(type="password" id="password" name="password" required)
+        div
+          a(href="/auth/forgot-password") ¿Olvidaste tu contraseña?
+        div
+          button(type="submit") Iniciar sesión
+
+      p
+        | ¿No tienes una cuenta?
+        a(href="/auth/signup") Registrarse
