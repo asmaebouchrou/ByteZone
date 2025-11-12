@@ -3,19 +3,19 @@ html(lang="en")
     head
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Reegistro 
+        title register 
 
-        h1 Registro 
+        h1 register 
         form(action="post" onclick="validarContrasenna()")
-            input(type="text" placeholder="Nombre completo" required)
+            input(type="text" placeholder="Full name" required)
             br
-            input(type="email" placeholder="Correo electrónico" required)
+            input(type="email" placeholder="Email" required)
             br
-            input(type="password" placeholder="Contraseña" id="contrasena"  required minlength="5")
+            input(type="password" placeholder="Password" id="password"  required minlength="5")
             br
-            input(type="password" placeholder="Repetir contraseña" id="contrasenaRepetida"  required minlength="5")
+            input(type="repeat_password" placeholder="Repeat password" id="repeat_password"  required minlength="5")
             br
-            button(type="submit" ) Registrarse
+            button(type="submit" ) Sign up
     body 
 
     script 
@@ -24,8 +24,7 @@ html(lang="en")
             let contrasenaRepetida = document.getElementById('contrasenaRepetida').value;
             if (!(contrasena===contrasenaRepetida)){
                 alert("Las contraseñas no coinciden, introducelas de nuevo");
-                //Para que no se envie el formulario
-                return flase;
+                return false;
             }
 
         }
