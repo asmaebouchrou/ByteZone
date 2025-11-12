@@ -1,0 +1,35 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title T-Shirt Store
+
+  body
+    header
+      a(href="/home")
+        img(src="/images/logo.png" alt="T-Shirt Store Logo")
+      button(type="button" id="menu-toggle") Menú
+
+    nav(id="sidebar")
+      ul
+        li: a(href="/camiseta/gender/woman") Mujer
+        li: a(href="/camiseta/gender/man") Hombre
+        li: a(href="/camiseta/gender/unisex") Unisex
+        li: a(href="/camiseta/gender/boy") Niño
+        li: a(href="/camiseta/gender/girl") Niña
+        li: a(href="/camiseta/gender/unisex_kids") Unisex Infantil
+
+    main
+      block content
+
+    footer
+      p © #{new Date().getFullYear()} T-Shirt Store — Todos los derechos reservados.
+
+    script.
+      const toggle = document.getElementById('menu-toggle');
+      const sidebar = document.getElementById('sidebar');
+      toggle.addEventListener('click', () => {
+        const isVisible = sidebar.style.display === 'block';
+        sidebar.style.display = isVisible ? 'none' : 'block';
+      });
