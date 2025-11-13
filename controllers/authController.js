@@ -50,5 +50,9 @@ module.exports = {
     req.session.destroy(() => {
       res.redirect('/auth/login');
     });
-  }
+  },
+  /*
+      router.get('/signup', authController.showSignUp);
+      router.post('/signup', authController.processSignup);
+  */
 };
