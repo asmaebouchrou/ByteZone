@@ -10,6 +10,7 @@ router.get('/logout', authController.logout);
 
 router.get('/signup', authController.showSignup);
 router.post('/signup', authController.processSignup);
+
 /*
 router.get('/forgot-password', authController.showForgotPassword);
 router.post('/forgot-password', authController.processResetPassword);

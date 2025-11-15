@@ -7,23 +7,16 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-/* =======================
-   ROUTERS
-======================= */
-const authRoutes = require('./routes/authRouter');
-// const productRoutes = require('./routes/productRouter');
-// const cartRoutes = require('./routes/cartRouter');
-// const adminRoutes = require('./routes/adminRouter');
-// etc.
+//ROUTERS
 
-/* =======================
-   AUTH MIDDLEWARES
-======================= */
+const authRoutes = require('./routes/authRouter');
+const profileRoutes = require('./routes/profileRouter')
+
+//AUTH MIDDLEWARES
+
 const { isAuthenticated, isAdmin } = require('./middlewares/auth');
 
-/* =======================
-   TEMPLATE ENGINE (PUG)
-======================= */
+//TEMPLATE ENGINE (PUG)
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -51,6 +44,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //ROUTES
 //Publicas
 app.use('/auth', authRoutes);
+app.use('/profile',isAuthenticated, profileRoutes);
+
 
 // Rutas que hace falta estar loggeado
 // app.use('/cart', isAuthenticated, cartRoutes);
