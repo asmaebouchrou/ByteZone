@@ -1,0 +1,48 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Header
+        style.
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                border-bottom: 1px solid #ddd;
+            }
+            .icons {
+                display: flex;
+                gap: 15px;
+                align-items: center;
+            }
+
+            
+            .logo {
+                height: 6rem;
+                width: auto;
+            }
+
+            
+            .icon {
+                height: 2rem;
+                width: auto;
+                margin-left:1rem;
+            }
+            .logoNavBar{
+                height: 3rem;
+                width: auto;
+            }
+    body
+        div.header
+            a(href="") 
+                img(src="/images/logoNavBar.png" alt="" class="logoNavBar")
+
+            img.logo(src="/images/logoBueno.png", alt="logo")
+
+            div.icons
+                a(href="/profile") 
+                    img.icon(src="/images/usrLog.png", alt="usuario")
+                a(href="/cart") 
+                    img.icon(src="/images/iconCart.png", alt="carrito")
