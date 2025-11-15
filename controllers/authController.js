@@ -15,14 +15,29 @@ module.exports = {
     }
 
     try {
-      const [rows] = await db.query('SELECT * FROM user WHERE email = ?', [email]);
+      const [rows] = await db.query(
+        'SELECT * FROM user WHERE email = ?',
+        [email]
+      );
       const user = rows[0];
 
       if (!user) {
         return res.status(401).render('auth/login', { error: 'User not found.' });
       }
 
-      const validPassword = await bcrypt.compare(password, user.password);
+      const [passRows] = await db.query(
+        'SELECT password_hash FROM password WHERE user_id = ?',
+        [user.id]
+      );
+
+      if (passRows.length === 0) {
+        return res.status(500).render('auth/login', { error: 'Password not found for this user.' });
+      }
+
+      const passwordHash = passRows[0].password_hash;
+
+      const validPassword = await bcrypt.compare(password, passwordHash);
+
       if (!validPassword) {
         return res.status(401).render('auth/login', { error: 'Incorrect password.' });
       }
@@ -30,6 +45,9 @@ module.exports = {
       req.session.user = {
         id: user.id,
         username: user.username,
+        email: user.email,
+        phone: user.phone,
+        address: user.address,
         role: user.role || 'client'
       };
 
@@ -38,7 +56,7 @@ module.exports = {
       if (user.role === 'admin') {
         res.redirect('/admin');
       } else {
-        res.redirect('/tshirts');
+        res.redirect('/profile');
       }
 
     } catch (error) {
@@ -67,8 +85,8 @@ module.exports = {
 
     if (password !== confirmPassword) {
       return res
-        .status(400).render('auth/signup', { error: 'Passwords must match.', old: req.body});
-        
+        .status(400).render('auth/signup', { error: 'Passwords must match.', old: req.body });
+
     }
 
     try {
