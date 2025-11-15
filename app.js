@@ -22,6 +22,14 @@ app.get('/', (req, res) => {
 const cartRoutes = require('./routes/cart.routes');
 app.use('/', cartRoutes);
 
+//Ruta del pedido
+const orderRoutes = require('./routes/order.routes');
+app.use('/', orderRoutes);
+
+const homeRoutes = require('./routes/home.routes');
+app.use('/', homeRoutes);
+
+
 
 // Iniciar servidor
 app.listen(PORT, () => {
