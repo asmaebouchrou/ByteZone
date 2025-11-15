@@ -13,4 +13,10 @@ router.post('/cart/agregar/:id', isAuthenticated, cartController.addToCart);
 // Eliminar producto del carrito
 router.post('/cart/delete/:id', isAuthenticated, cartController.deleteFromCart);
 
+//Añadir rutas GET y POST para /cart/process
+router.get('/cart/process', isAuthenticated, cartController.processBuyView);
+
+router.post('/cart/process', isAuthenticated, cartController.processBuy);
+
+
 module.exports = router;
