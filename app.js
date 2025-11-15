@@ -18,6 +18,11 @@ app.get('/', (req, res) => {
   res.render('index'); // Renderiza views/index.pug
 });
 
+//Ruta para ir al carrito
+const cartRoutes = require('./routes/cart.routes');
+app.use('/', cartRoutes);
+
+
 // Iniciar servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
