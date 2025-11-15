@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta principal para renderizar la página principal (index.pug)
 app.get('/', (req, res) => {
-  res.render('index'); // Renderiza views/index.pug
+  res.render('partials/header'); // Renderiza views/index.pug
 });
 
 // Iniciar servidor
