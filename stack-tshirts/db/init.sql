@@ -5,7 +5,7 @@ USE `tshirts`;
 
 CREATE TABLE `user` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(50) NOT NULL UNIQUE,
+  `username` VARCHAR(255) NOT NULL,
   `email` VARCHAR(100) NOT NULL UNIQUE,
   `phone` VARCHAR(20),
   `address` VARCHAR(255),
@@ -93,6 +93,14 @@ CREATE TABLE `payment` (
   FOREIGN KEY (`payment_method_id`) REFERENCES `payment_method`(`id`),
   INDEX `idx_customer_order_id` (`customer_order_id`),
   INDEX `idx_transaction_id` (`transaction_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE reset_tokens (
+    user_id INT UNSIGNED NOT NULL,
+    token VARCHAR(128) NOT NULL UNIQUE,
+    expires_at DATETIME NOT NULL,
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 

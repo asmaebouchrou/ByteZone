@@ -1,0 +1,81 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title User Profile — T-Shirt Store
+  body
+
+    header
+      h1 User Profile
+      nav
+        a(href="/auth/logout") Logout
+
+    if success
+      div(class="success-message")
+        | #{success}
+
+    if error
+      div(class="error-message")
+        | #{error}
+
+    main
+      section
+        h2 Personal Information
+        p Here you can view and update your personal information.
+
+        .profile-info
+          p 
+            strong Username: 
+            | #{user.username}
+          p 
+            strong Email: 
+            | #{user.email}
+          p 
+            strong Role: 
+            | #{user.role}
+
+      hr
+
+      section
+        h2 Update Profile
+        p Update your phone number, email or address.
+
+        form(action="/profile/update" method="post")
+          .form-group
+            label(for="phone") Phone
+            input(type="text" name="phone" id="phone" value=user.phone)
+
+          .form-group
+            label(for="address") Address
+            input(type="text" name="address" id="address" value=user.address)
+
+          .form-group
+            label(for="email") Email
+            input(type="email" name="email" id="email" value=user.email)  
+
+          button(type="submit") Save Changes
+
+      hr
+
+      section
+        h2 Security
+        p Change your password for increased account security.
+
+        form(action="/profile/change-password" method="post")
+          .form-group
+            label(for="currentPassword") Current Password
+            input(type="password" name="currentPassword" id="currentPassword" required)
+
+          .form-group
+            label(for="newPassword") New Password
+            input(type="password" name="newPassword" id="newPassword" required)
+
+          .form-group
+            label(for="confirmNewPassword") Confirm New Password
+            input(type="password" name="confirmNewPassword" id="confirmNewPassword" required)
+
+          button(type="submit") Change Password
+
+    footer
+      p © 2025 T-Shirt Store
