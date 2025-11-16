@@ -95,6 +95,14 @@ CREATE TABLE `payment` (
   INDEX `idx_transaction_id` (`transaction_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE reset_tokens (
+    user_id INT UNSIGNED NOT NULL,
+    token VARCHAR(128) NOT NULL UNIQUE,
+    expires_at DATETIME NOT NULL,
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 INSERT INTO `user` (`username`, `email`, `phone`, `address`, `role`) VALUES
 ('admin_user', 'admin@tshirtstore.com', '+34123456789', 'Calle Principal 123, Madrid', 'OPERATOR'),
