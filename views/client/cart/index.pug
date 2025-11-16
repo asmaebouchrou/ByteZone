@@ -1,10 +1,48 @@
-doctype html
-html(lang="en")
-    head
-        link(rel="stylesheet" href="/css/output.css")
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Document
-    body 
-    h2 Estás en el carrito
-    h1(class="text-4xl font-bold text-green-500") Tailwind funciona
+extends ../../layouts/generalLayout
+
+block content
+    .cart-container
+        h1 Carrito de Compra
+
+        if items.length === 0
+            p Tu carrito está vacío.
+            a(href="/tshirt" class="btn btn-primary") Ver productos
+        else
+            table.cart-table
+                thead
+                    tr
+                        th Producto
+                        th Color
+                        th Talla
+                        th Cantidad
+                        th Precio
+                        th Subtotal
+                        th Acciones
+
+                tbody
+                    each item in items
+                        tr
+                            td #{item.brand}
+                            td #{item.color}
+                            td #{item.size}
+
+                            // Cantidad con botones + y -
+                            td
+                                a.btn-minus(href=`/cart/del/tshirt/${item.id}`) −
+                                span.qty #{item.quantity}
+                                a.btn-plus(href=`/cart/add/tshirt/${item.product}`) +
+
+                            td #{item.sale_price.toFixed(2)} €
+                            td #{(item.sale_price * item.quantity).toFixed(2)} €
+
+                            td
+                                a.btn-delete(href=`/cart/del/tshirt/${item.id}?full=1`) 🗑️
+
+            .cart-total
+                h2 Total: #{cart.total.toFixed(2)} €
+
+            .actions
+                a(
+                    href="/cart/checkout"
+                    class="btn btn-success"
+                ) Procesar compra
