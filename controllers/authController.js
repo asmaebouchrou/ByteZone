@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const db = require('../config/database');
+const emailService = require('../services/emailService');
 
 module.exports = {
   // LOGIN
@@ -129,5 +130,172 @@ module.exports = {
       return res
         .status(500).render('auth/signup', { error: 'Server error. Please try again later.' });
     }
-  }
+  },
+  //FORGOT PASSWORD
+  showForgotPassword: (req, res) => {
+    res.render('auth/forgot-password');
+  },
+  processResetPassword: async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).render('auth/forgot-password', {
+        error: 'Please enter your email.'
+      });
+    }
+
+    try {
+      const [rows] = await db.query(
+        'SELECT id FROM user WHERE email = ?',
+        [email]
+      );
+
+      if (rows.length === 0) {
+        return res.status(400).render('auth/forgot-password', {
+          error: 'No account found with that email.'
+        });
+      }
+
+      const userId = rows[0].id;
+
+      const crypto = require('crypto');
+      const resetToken = crypto.randomBytes(32).toString('hex');
+
+      const expiresAt = new Date(Date.now() + 30 * 60000);
+
+      await db.query(
+        `INSERT INTO reset_tokens (user_id, token, expires_at)
+             VALUES (?, ?, ?)
+             ON DUPLICATE KEY UPDATE token = ?, expires_at = ?`,
+        [userId, resetToken, expiresAt, resetToken, expiresAt]
+      );
+
+      const resetLink = `http://localhost:3000/auth/reset-password/${resetToken}`;
+
+      await emailService.sendMail({
+        to: email,
+        subject: "Reset your T-Shirt Store password",
+        html: `
+                <h2>Password Reset Request</h2>
+                <p>You requested to reset your password.</p>
+                <p>Click the link below to set a new password:</p>
+                <a href="${resetLink}" target="_blank">
+                    Reset your password
+                </a>
+                <p>This link expires in 30 minutes.</p>
+            `
+      });
+
+      console.log("Reset email sent to:", email);
+
+      return res.render('auth/forgot-password', {
+        success: 'An email has been sent with password reset instructions.'
+      });
+
+    } catch (error) {
+      console.error("RESET PASSWORD ERROR:", error);
+      return res.status(500).render('auth/forgot-password', {
+        error: 'Server error. Check console for details.'
+      });
+    }
+  },
+  showResetPasswordForm: async (req, res) => {
+    const { token } = req.params;
+
+    try {
+        const [rows] = await db.query(
+            `SELECT user_id, expires_at FROM reset_tokens WHERE token = ?`,
+            [token]
+        );
+
+        if (rows.length === 0) {
+            return res.render('auth/reset-password', {
+                error: 'Invalid or expired password reset link.'
+            });
+        }
+
+        const tokenData = rows[0];
+        const now = new Date();
+
+        if (now > tokenData.expires_at) {
+            return res.render('auth/reset-password', {
+                error: 'This reset link has expired. Please request a new one.'
+            });
+        }
+
+        return res.render('auth/reset-password', {
+            token
+        });
+
+    } catch (err) {
+        console.error("Reset password form error:", err);
+        return res.render('auth/reset-password', {
+            error: 'Server error. Try again later.'
+        });
+    }
+},
+processNewPassword: async (req, res) => {
+    const { token } = req.params;
+    const { newPassword, confirmPassword } = req.body;
+
+    if (!newPassword || !confirmPassword) {
+        return res.render('auth/reset-password', {
+            error: 'Please fill in all fields.',
+            token
+        });
+    }
+
+    if (newPassword !== confirmPassword) {
+        return res.render('auth/reset-password', {
+            error: 'Passwords do not match.',
+            token
+        });
+    }
+
+    try {
+        const [rows] = await db.query(
+            `SELECT user_id, expires_at 
+             FROM reset_tokens
+             WHERE token = ?`,
+            [token]
+        );
+
+        if (rows.length === 0) {
+            return res.render('auth/reset-password', {
+                error: 'Invalid or expired reset link.'
+            });
+        }
+
+        const { user_id, expires_at } = rows[0];
+
+        if (new Date() > expires_at) {
+            return res.render('auth/reset-password', {
+                error: 'This reset link has expired.',
+            });
+        }
+
+        // Hash new password
+        const hashed = await bcrypt.hash(newPassword, 10);
+
+        // Update real password
+        await db.query(
+            `UPDATE password SET password_hash = ? WHERE user_id = ?`,
+            [hashed, user_id]
+        );
+
+        // Delete reset token so it can’t be reused
+        await db.query(`DELETE FROM reset_tokens WHERE token = ?`, [token]);
+
+        return res.render('auth/login', {
+            success: 'Password updated successfully. You can now log in.'
+        });
+
+    } catch (err) {
+        console.error("Reset password error:", err);
+        return res.render('auth/reset-password', {
+            error: 'Server error. Try again later.',
+            token
+        });
+    }
+}
 };
