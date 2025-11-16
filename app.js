@@ -18,6 +18,15 @@ app.get('/', (req, res) => {
   res.render('index'); // Renderiza views/index.pug
 });
 
+const session = require("express-session");
+
+app.use(session({
+    secret: "tshirt-secret",
+    resave: false,
+    saveUninitialized: true
+}));
+
+
 //Ruta para ir al carrito
 const cartRoutes = require('./routes/cart.routes');
 app.use('/', cartRoutes);

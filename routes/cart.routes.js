@@ -1,16 +1,21 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const cartController = require("../controllers/cartController");
+const authTemp = require("../middlewares/authTemp");
 
-const cartController = require('../controllers/cartController');
-const { isAuthenticated } = require('../middlewares/authTemp');
+// View cart
+router.get("/cart", authTemp, cartController.viewCart);
 
-// Ver carrito
-router.get('/cart', isAuthenticated, cartController.viewCart);
+// Add item
+router.get("/cart/add/tshirt/:id", authTemp, cartController.addItem);
+router.post("/cart/add/tshirt/:id", authTemp, cartController.addItem);
 
-// Añadir producto al carrito
-router.post('/cart/agregar/:id', isAuthenticated, cartController.addToCart);
+// Remove item
+router.get("/cart/del/tshirt/:id", authTemp, cartController.removeItem);
+router.post("/cart/del/tshirt/:id", authTemp, cartController.removeItem);
 
-// Eliminar producto del carrito
-router.post('/cart/delete/:id', isAuthenticated, cartController.deleteFromCart);
+// Checkout
+router.get("/cart/checkout", authTemp, cartController.processView);
+router.post("/cart/checkout", authTemp, cartController.processBuy);
 
 module.exports = router;
