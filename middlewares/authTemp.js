@@ -1,7 +1,5 @@
-module.exports = {
-    isAuthenticated: (req, res, next) => {
-        // Middleware temporal para no bloquear el desarrollo
-        console.log("Middleware temporal isAuthenticated (pendiente de implementación real)");
-        next(); 
-    }
+module.exports = (req, res, next) => {
+    console.log("Middleware temporal (pendiente de implementación real)");
+    req.session.user = { id: 2 }; // TEMPORAL
+    next();
 };

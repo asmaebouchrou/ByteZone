@@ -1,17 +1,20 @@
 module.exports = {
 
+    // Crear un pedido (insert en la tabla orders)
     createOrder: async (userId, total) => {
-        // TODO: insertar pedido en la tabla orders
+        // TODO: implementar INSERT en la BD y devolver el ID del pedido
         return null;
     },
 
+    // Obtener todos los pedidos de un usuario
     getOrdersByUser: async (userId) => {
-        // TODO: obtener pedidos de un usuario
+        // TODO: SELECT * FROM orders WHERE user_id = ?
         return [];
     },
 
+    // Obtener un pedido concreto por ID
     getOrderById: async (orderId) => {
-        // TODO: obtener información de un pedido
+        // TODO: SELECT * FROM orders WHERE id = ?
         return null;
     }
 

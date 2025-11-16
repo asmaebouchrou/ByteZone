@@ -12,6 +12,7 @@
     "dev": "nodemon app.js"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "tailwindcss": "^3.4.1"
   }
 }
