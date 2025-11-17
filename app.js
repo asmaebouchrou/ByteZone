@@ -29,8 +29,8 @@ app.use(session({
 const cartRoutes = require('./routes/cart.routes');
 app.use('/', cartRoutes);
 
-const orderRoutes = require('./routes/order.routes');
-app.use('/', orderRoutes);
+//const orderRoutes = require('./routes/order.routes');
+//app.use('/', orderRoutes);
 
 // Iniciar servidor
 app.listen(PORT, () => {
