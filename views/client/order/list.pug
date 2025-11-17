@@ -1,4 +1,25 @@
+extends ../../layouts/generalLayout
 
 block content
     h1 Mis pedidos
-    p Aquí se mostrará el listado de pedidos del usuario.
+
+    if orders.length === 0
+        p No tienes pedidos todavía.
+    else
+        table.order-table
+            thead
+                tr
+                    th ID
+                    th Fecha
+                    th Estado
+                    th Total
+                    th Acción
+            tbody
+                each o in orders
+                    tr
+                        td #{o.id}
+                        td #{o.date.toLocaleDateString()}
+                        td #{o.status}
+                        td #{(parseFloat(o.total) || 0).toFixed(2)} €
+                        td 
+                            a.btn(href=`/orders/${o.id}`) Ver detalle

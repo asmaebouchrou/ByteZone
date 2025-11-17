@@ -1,4 +1,37 @@
+extends ../../layouts/generalLayout
 
 block content
-    h1 Detalle del pedido
-    p Aquí se mostrará el detalle del pedido seleccionado.
+    h1 Detalle del pedido ##{order.id}
+
+    p 
+        strong Fecha: 
+        | #{order.date.toLocaleDateString()}
+
+    p 
+        strong Estado: 
+        | #{order.status}
+
+    h2 Productos del pedido
+
+    table
+        thead
+            tr
+                th Producto
+                th Color
+                th Talla
+                th Cantidad
+                th Precio
+                th Subtotal
+        tbody
+            each item in items
+                tr
+                    td= item.brand
+                    td= item.color
+                    td= item.size
+                    td= item.quantity
+                    td= (parseFloat(item.sale_price) || 0).toFixed(2) + " €"
+                    td= ((parseFloat(item.sale_price) || 0) * (item.quantity || 0)).toFixed(2) + " €"
+
+    h2 Total: #{(parseFloat(order.total) || 0).toFixed(2)} €
+
+    a.btn(href="/orders") Volver al listado
