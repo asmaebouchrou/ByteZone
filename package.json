@@ -5,6 +5,7 @@
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "mysql2": "^3.15.3",
+    "nodemailer": "^7.0.10",
     "pug": "^3.0.3"
   },
   "scripts": {
@@ -12,6 +13,7 @@
     "dev": "nodemon app.js"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "tailwindcss": "^3.4.1"
   }
 }

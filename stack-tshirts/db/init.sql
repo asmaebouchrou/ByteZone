@@ -72,11 +72,11 @@ CREATE TABLE `customer_order_line` (
   `customer_order` INT UNSIGNED NOT NULL,
   `product` INT UNSIGNED NOT NULL,
   `sale_price` DECIMAL(8,2) NOT NULL,
+  `quantity` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`customer_order`) REFERENCES `customer_order`(`id`),
   FOREIGN KEY (`product`) REFERENCES `tshirt`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 
 
 CREATE TABLE `payment` (
@@ -132,22 +132,25 @@ INSERT INTO `customer_order` (`client`, `status`, `total`) VALUES
 (3, 'processing', 35.99),
 (4, 'cart', 0.00);
 
-INSERT INTO `customer_order_line` (`customer_order`, `product`, `sale_price`) VALUES
-(1, 1, 25.99),
-(1, 3, 22.50),
-(2, 2, 22.50),
-(2, 4, 28.75),
-(2, 6, 15.99),
-(3, 5, 21.99),
-(3, 7, 14.00);
+INSERT INTO `customer_order_line` (`customer_order`, `product`, `sale_price`, `quantity`) VALUES
+(1, 1, 25.99, 1),
+(1, 3, 22.50, 1),
+(2, 2, 22.50, 3),
+(2, 4, 28.75, 2),
+(2, 6, 15.99, 1),
+(3, 5, 21.99, 2),
+(3, 7, 14.00, 5);
+
 
 INSERT INTO `payment` (`customer_order_id`, `payment_method_id`, `amount`, `status`, `transaction_id`, `payment_date`) VALUES
 (1, 1, 48.49, 'COMPLETED', 'txn_123456789', '2024-01-15 10:30:00'),
 (2, 1, 67.24, 'COMPLETED', 'txn_987654321', '2024-01-16 14:45:00'),
 (3, 3, 35.99, 'PENDING', NULL, NULL);
 
-UPDATE `customer_order` SET total = (
-  SELECT SUM(sale_price) 
-  FROM `customer_order_line` 
-  WHERE `customer_order`.id = `customer_order_line`.customer_order
-) WHERE id IN (1, 2, 3);
+UPDATE customer_order 
+SET total = (
+  SELECT SUM(sale_price * quantity)
+  FROM customer_order_line
+  WHERE customer_order.id = customer_order_line.customer_order
+)
+WHERE id IN (1, 2, 3);
