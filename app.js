@@ -57,13 +57,7 @@ app.use('/profile',isAuthenticated, profileRoutes);
 
 // Página principal
 app.get('/', (req, res) => {
-  res.render('auth/login');
-});
-
-
-//404 HANDLER
-app.use((req, res) => {
-  res.status(404).render('404');
+  res.render('layouts/adminLayout'); // Renderiza views/index.pug
 });
 
 //SERVER START
