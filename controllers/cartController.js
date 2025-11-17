@@ -96,38 +96,53 @@ module.exports = {
     // PANTALLA DE CHECKOUT
     // ---------------------------------------------------------
     async processView(req, res) {
-        const clientId = req.session.user.id;
+    const clientId = req.session.user.id;
 
-        const [[cart]] = await CartModel.getUserCart(clientId);
-        const [items] = await CartModel.getCartItems(cart.id);
+    const [[cart]] = await CartModel.getUserCart(clientId);
+    let [items] = await CartModel.getCartItems(cart.id);
 
-        res.render("client/cart/process", {
-            cart,
-            items
-        });
-    },
+    // Convertir valores numéricos
+    items = items.map(i => ({
+        ...i,
+        sale_price: Number(i.sale_price),
+        quantity: Number(i.quantity)
+    }));
+
+    cart.total = Number(cart.total);
+
+    res.render("client/cart/process", {
+        cart,
+        items
+    });
+},
 
     // ---------------------------------------------------------
     // PROCESAR COMPRA
     // ---------------------------------------------------------
     async processBuy(req, res) {
-        const clientId = req.session.user.id;
+    const clientId = req.session.user.id;
 
-        const [[cart]] = await CartModel.getUserCart(clientId);
+    const [[cart]] = await CartModel.getUserCart(clientId);
 
-        await db.query(
-            `UPDATE customer_order 
-             SET status='paid'
-             WHERE id = ?`,
-            [cart.id]
-        );
+    // 1 Marcar pedido como pagado + fecha
+    await db.query(
+        `UPDATE customer_order 
+         SET status='paid', date = NOW()
+         WHERE id = ?`,
+        [cart.id]
+    );
 
-        await db.query(
-            `INSERT INTO payment (customer_order_id, amount, status)
-             VALUES (?, ?, 'COMPLETED')`,
-            [cart.id, cart.total]
-        );
+    // 2 Registrar pago
+    await db.query(
+        `INSERT INTO payment (customer_order_id, amount, status)
+         VALUES (?, ?, 'COMPLETED')`,
+        [cart.id, cart.total]
+    );
 
-        res.redirect(`/orders/${cart.id}`);
-    }
+    // 3Crear carrito nuevo vacío para el usuario
+    await CartModel.createCart(clientId);
+
+    // 4 Redirigir a la pantalla del pedido terminado
+    res.redirect(`/orders/${cart.id}`);
+}
 };
