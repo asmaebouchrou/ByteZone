@@ -1,21 +1,27 @@
+const db = require("../config/database");
+
 module.exports = {
 
-    // Crear un pedido (insert en la tabla orders)
-    createOrder: async (userId, total) => {
-        // TODO: implementar INSERT en la BD y devolver el ID del pedido
-        return null;
+    async getOrdersByUser(userId) {
+        const sql = `
+            SELECT id, date, status, total
+            FROM customer_order
+            WHERE client = ? AND status != 'cart'
+            ORDER BY date DESC
+        `;
+        const [rows] = await db.query(sql, [userId]);
+        return rows;
     },
 
-    // Obtener todos los pedidos de un usuario
-    getOrdersByUser: async (userId) => {
-        // TODO: SELECT * FROM orders WHERE user_id = ?
-        return [];
-    },
-
-    // Obtener un pedido concreto por ID
-    getOrderById: async (orderId) => {
-        // TODO: SELECT * FROM orders WHERE id = ?
-        return null;
+    async getOrderById(orderId, userId) {
+        const sql = `
+            SELECT id, date, status, total
+            FROM customer_order
+            WHERE id = ? AND client = ? AND status != 'cart'
+            LIMIT 1
+        `;
+        const [[row]] = await db.query(sql, [orderId, userId]);
+        return row;
     }
 
 };

@@ -20,19 +20,22 @@ app.get('/', (req, res) => {
 const session = require("express-session");
 
 app.use(session({
-    secret: "tshirt-secret",
-    resave: false,
-    saveUninitialized: true
+  secret: "tshirt-secret",
+  resave: false,
+  saveUninitialized: true
 }));
 
 
 const cartRoutes = require('./routes/cart.routes');
 app.use('/', cartRoutes);
 
-//const orderRoutes = require('./routes/order.routes');
-//app.use('/', orderRoutes);
+const orderRoutes = require('./routes/order.routes');
+app.use('/', orderRoutes);
+
 
 // Iniciar servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+module.exports = app;

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { isAuthenticated } = require('../middlewares/authTemp');
+const isAuthenticated = require('../middlewares/authTemp');
 const orderController = require('../controllers/orderController');
 
 // Listado de pedidos
