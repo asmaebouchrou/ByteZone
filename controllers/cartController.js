@@ -1,5 +1,7 @@
 const CartModel = require("../models/CartModel");
 const db = require("../config/database");
+const transporter = require("../config/mailer");
+
 
 module.exports = {
 
@@ -96,53 +98,86 @@ module.exports = {
     // PANTALLA DE CHECKOUT
     // ---------------------------------------------------------
     async processView(req, res) {
-    const clientId = req.session.user.id;
+        const clientId = req.session.user.id;
 
-    const [[cart]] = await CartModel.getUserCart(clientId);
-    let [items] = await CartModel.getCartItems(cart.id);
+        const [[cart]] = await CartModel.getUserCart(clientId);
+        let [items] = await CartModel.getCartItems(cart.id);
 
-    // Convertir valores numéricos
-    items = items.map(i => ({
-        ...i,
-        sale_price: Number(i.sale_price),
-        quantity: Number(i.quantity)
-    }));
+        // Convertir valores numéricos
+        items = items.map(i => ({
+            ...i,
+            sale_price: Number(i.sale_price),
+            quantity: Number(i.quantity)
+        }));
 
-    cart.total = Number(cart.total);
+        cart.total = Number(cart.total);
 
-    res.render("client/cart/process", {
-        cart,
-        items
-    });
-},
+        res.render("client/cart/process", {
+            cart,
+            items
+        });
+    },
 
     // ---------------------------------------------------------
     // PROCESAR COMPRA
     // ---------------------------------------------------------
     async processBuy(req, res) {
-    const clientId = req.session.user.id;
+        const clientId = req.session.user.id;
 
-    const [[cart]] = await CartModel.getUserCart(clientId);
+        const [[cart]] = await CartModel.getUserCart(clientId);
+        const [items] = await CartModel.getCartItems(cart.id);
 
-    // 1 Marcar pedido como pagado + fecha
-    await db.query(
-        `UPDATE customer_order 
+        // 1. Marcar pedido como pagado
+        await db.query(
+            `UPDATE customer_order 
          SET status='paid', date = NOW()
          WHERE id = ?`,
-        [cart.id]
-    );
+            [cart.id]
+        );
 
-    // 2 Registrar pago
-    await db.query(
-        `INSERT INTO payment (customer_order_id, amount, status)
+        // 2. Registrar pago
+        await db.query(
+            `INSERT INTO payment (customer_order_id, amount, status)
          VALUES (?, ?, 'COMPLETED')`,
-        [cart.id, cart.total]
-    );
+            [cart.id, cart.total]
+        );
 
-    // 3Crear carrito nuevo vacío para el usuario
-    await CartModel.createCart(clientId);
+        // 3. Obtener email del usuario
+        const [[user]] = await db.query(
+            "SELECT email, username FROM user WHERE id = ?",
+            [clientId]
+        );
 
-    // 4 Redirigir a la pantalla del pedido terminado
-    res.redirect(`/orders/${cart.id}`);
-}
+        // 4. Preparar HTML del email
+        const html = `
+        <h2>¡Gracias por tu compra, ${user.username}!</h2>
+        <p>Pedido procesado correctamente.</p>
+
+        <h3>Resumen del pedido:</h3>
+        <ul>
+            ${items.map(i => `
+                <li>${i.quantity} × ${i.brand} (${i.size}, ${i.color}) — ${i.sale_price}€</li>
+            `).join("")}
+        </ul>
+
+        <h3>Total: ${cart.total} €</h3>
+
+        <p>Recibirás otro correo cuando tu pedido sea enviado.</p>
+        <p>Gracias por confiar en T-Shirt Store :) </p>
+    `;
+
+        // 5. Enviar email
+        await transporter.sendMail({
+            from: `"T-Shirt Store" <${process.env.MAIL_USER}>`,
+            to: user.email,
+            subject: "Confirmación de tu pedido",
+            html
+        });
+
+        // 6. Crear carrito nuevo
+        await CartModel.createCart(clientId);
+
+        // 7. Redirigir al detalle del pedido
+        res.redirect(`/orders/${cart.id}`);
+    }
 };
