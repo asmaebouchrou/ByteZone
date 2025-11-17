@@ -13,7 +13,7 @@ html(lang="en")
                 margin: 20px auto;
             }
             .card {
-                width: calc(25% - 20px);
+                width: calc(33.33% - 20px);
                 border: 1px solid #ddd;
                 padding: 0px;
                 text-align: center;
@@ -25,15 +25,16 @@ html(lang="en")
     body
         div.grid
             // Fila 1
-            each item in [1,2,3,4]
+            each item in [1,2,3]
                 div.card
                     img(src="/images/tshirt_example.jpg", alt="")
                     p Nombre: Camiseta #{item}
                     p Precio: #{item * 10}€
-                    button Ver Detalle
+                    a(href=`/tshirts/${item}`) 
+                        button Ver Detalle
 
             // Fila 2
-            each item in [5,6,7,8]
+            each item in [4,5,6]
                 div.card
                     img(src="/images/tshirt_example.jpg", alt="")
                     p Nombre: Camiseta #{item}
@@ -41,7 +42,7 @@ html(lang="en")
                     button Ver Detalle
 
             // Fila 3
-            each item in [9,10,11,12]
+            each item in [7,8,9]
                 div.card
                     img(src="/images/tshirt_example.jpg", alt="")
                     p Nombre: Camiseta #{item}
@@ -49,9 +50,21 @@ html(lang="en")
                     button Ver Detalle
 
             // Fila 4
-            each item in [13,14,15,16]
+            each item in [10,11,12]
                 div.card
                     img(src="/images/tshirt_example.jpg", alt="")
                     p Nombre: Camiseta #{item}
                     p Precio: #{item * 10}€
-                    button Ver Detalle
+                    a(href="") 
+                        button Ver Detalle
+            
+            //Fila de camisetas de la base de datos
+            each camiseta in tshirts
+                div.card
+                    img(src=camiseta.image, alt="")
+                    p= camiseta.size
+                    p= camiseta.price
+                    p= camiseta.gender
+                    p= camiseta.brand
+                    a(href="") 
+                        button Ver Detalle

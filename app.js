@@ -10,7 +10,8 @@ const PORT = process.env.PORT || 3000;
 //ROUTERS
 
 const authRoutes = require('./routes/authRouter');
-const profileRoutes = require('./routes/profileRouter')
+const profileRoutes = require('./routes/profileRouter');
+const tshirtsRoutes = require('./routes/tshirtsRouter');
 
 //AUTH MIDDLEWARES
 
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Publicas
 app.use('/auth', authRoutes);
 app.use('/profile',isAuthenticated, profileRoutes);
+app.use('/tshirt', tshirtsRoutes);
 
 
 // Rutas que hace falta estar loggeado
@@ -57,7 +59,7 @@ app.use('/profile',isAuthenticated, profileRoutes);
 
 // Página principal
 app.get('/', (req, res) => {
-  res.render('layouts/adminLayout'); // Renderiza views/index.pug
+  res.render('client/home'); // Renderiza views/index.pug
 });
 
 //SERVER START
