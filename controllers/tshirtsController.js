@@ -9,9 +9,13 @@ module.exports = {
         res.render('client/tshirt/list', {tshirts: resultado});
     },
 
-    showDetailTshirt:(req, res)=>{
-        res.render('client/home');
+    showDetail: async (req, res)=>{
+        let id = req.params.id;
+        const [response] = await db.query(`SELECT * FROM tshirt WHERE id =? `, [id]);
+        res.render('client/tshirt/detail', {detalle: response});
     }
+
+    
 }
 
 
