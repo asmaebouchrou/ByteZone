@@ -17,9 +17,9 @@
 
 | Método | Ruta                 | Descripción                                       | Vista                         | Auth |
 | :----: | :------------------- | :------------------------------------------------ | :---------------------------- | :--: |
-|   GET  | `/`                  | Landing page (productos destacados)               | `client/home.pug`            |   ❌  |
-|   GET  | `/tshirts`         | Listado general de tshirts (grid, filtros)      | `client/tshirt/list.pug`   |   ❌  |
-|   GET  | `/tshirts/:id`     | Detalle de camiseta con variantes (color, talla)  | `client/tshirt/detail.pug` |   ❌  |
+|   GET  | `/`                  | Landing page (productos destacados)               | `client/home.pug`            |   ✅  |
+|   GET  | `/tshirts`         | Listado general de tshirts (grid, filtros)      | `client/tshirt/list.pug`   |   ✅  |
+|   GET  | `/tshirts/:id`     | Detalle de camiseta con variantes (color, talla)  | `client/tshirt/detail.pug` |   ✅  |
 |   GET  | `/api/tshirts`     | Devuelve JSON con listado de tshirts            | —                             |   ❌  |
 |   GET  | `/api/tshirts/:id` | Devuelve JSON con detalle de camiseta y variantes | —                             |   ❌  |
 
