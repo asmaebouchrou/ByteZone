@@ -1,0 +1,37 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Detail Tshirt
+    style.
+      .container {
+        display: flex;
+        align-items: flex-start; /* Alinea la info al inicio verticalmente */
+        gap: 20px; /* Espacio entre imagen e información */
+        padding: 20px;
+        
+      }
+      .container img {
+        max-width: 300px; /* Ajusta el tamaño de la imagen */
+        height: auto;
+        border-radius: 8px;
+      }
+      .info h3, .info h4, .info p, .info button {
+        margin: 10px 0;
+      }
+  body
+    each camiseta in detalle
+        .container
+            img(src=camiseta.image, alt="")
+            .info
+                h3 Precio
+                h3= camiseta.price
+                br
+                h4 Stock:
+                h4= camiseta.stock
+                br
+                a(href="/cart") 
+                    button ADD TO CART
+                br
+                p Categories: T-Shirts
