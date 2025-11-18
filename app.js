@@ -1,38 +1,74 @@
-// app.js
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configurar Pug como motor de plantillas
+//ROUTERS
+const authRoutes = require('./routes/authRouter');
+const profileRoutes = require('./routes/profileRouter');
+const tshirtsRoutes = require('./routes/tshirtsRouter');
+
+//AUTH MIDDLEWARES
+const { isAuthenticated, isAdmin } = require('./middlewares/auth');
+
+//TEMPLATE ENGINE (PUG)
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // Middleware para servir archivos estáticos (imágenes, css, js si los añades después)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Ruta principal para renderizar la página principal (index.pug)
-app.get('/', (req, res) => {
-  res.render('index'); // Renderiza views/index.pug
-});
+//BODY PARSING
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-const session = require("express-session");
-
-app.use(session({
-    secret: "tshirt-secret",
+//SESSION CONFIG
+app.use(
+  session({
+    secret: 'tshirt-secret',
     resave: false,
-    saveUninitialized: true
-}));
+    saveUninitialized: false,
+    cookie: {
+      secure: false,      // Necesario en HTTP local, si lo pones en TRUE peta 
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 // 1 hora de vida para la cookie
+    }
+  })
+);
 
+//ROUTES
+//Publicas
+app.use('/auth', authRoutes);
+app.use('/profile',isAuthenticated, profileRoutes);
+app.use('/tshirt', tshirtsRoutes);
+
+// Rutas que hace falta estar loggeado
+// app.use('/cart', isAuthenticated, cartRoutes);
+// app.use('/profile', isAuthenticated, profileRoutes);
+// app.use('/orders', isAuthenticated, orderRoutes);
+
+// Rutas de admin, aqui va el panel de admin
+// app.use('/admin', isAdmin, adminRoutes);
 
 //Ruta para ir al carrito
 const cartRoutes = require('./routes/cart.routes');
 app.use('/', cartRoutes);
 
+// Página principal
+app.get('/', (req, res) => {
+  res.render('client/home'); // Renderiza views/index.pug
+});
 
-// Iniciar servidor
+// Ruta principal para renderizar la página principal (index.pug)
+app.get('/index', (req, res) => {
+  res.render('index'); // Renderiza views/index.pug
+});
+
+//SERVER START
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
