@@ -11,10 +11,12 @@ const PORT = process.env.PORT || 3000;
 
 const authRoutes = require('./routes/authRouter');
 const profileRoutes = require('./routes/profileRouter')
+const adminRoutes = require('./routes/adminRouter');
 
 //AUTH MIDDLEWARES
 
 const { isAuthenticated, isAdmin } = require('./middlewares/auth');
+const adminController = require('./controllers/adminController');
 
 //TEMPLATE ENGINE (PUG)
 app.set('view engine', 'pug');
@@ -45,6 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Publicas
 app.use('/auth', authRoutes);
 app.use('/profile',isAuthenticated, profileRoutes);
+app.use('/admin', adminRoutes);
 
 
 // Rutas que hace falta estar loggeado
