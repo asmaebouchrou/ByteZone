@@ -47,7 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Publicas
 app.use('/auth', authRoutes);
 app.use('/profile',isAuthenticated, profileRoutes);
-app.use('/admin', adminRoutes);
+app.use('/admin/tshirt', adminRoutes);
 
 
 // Rutas que hace falta estar loggeado
