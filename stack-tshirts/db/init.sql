@@ -52,8 +52,10 @@ CREATE TABLE `tshirt` (
   `stock` INT UNSIGNED NOT NULL DEFAULT 0,
   `price` DECIMAL(8,2) NOT NULL,
   `active` BOOLEAN,
+  `image` VARCHAR(255),            
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 
 CREATE TABLE `customer_order` (
@@ -116,17 +118,17 @@ INSERT INTO `password` (`user_id`, `password_hash`) VALUES
 (3, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'), 
 (4, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'); 
 
-INSERT INTO `tshirt` (`size`, `gender`, `color`, `brand`, `stock`, `price`, `active`) VALUES
-('m', 'man', 'Negro', 'Nike', 50, 25.99, TRUE),
-('l', 'woman', 'Blanco', 'Adidas', 30, 22.50, TRUE),
-('xl', 'unisex', 'Azul', 'Puma', 25, 19.99, TRUE),
-('s', 'man', 'Rojo', 'Under Armour', 40, 28.75, TRUE),
-('m', 'woman', 'Verde', 'New Balance', 35, 21.99, TRUE),
-('l', 'unisex', 'Gris', 'Champion', 20, 17.50, TRUE),
-('xl', 'man', 'Negro', 'Nike', 15, 26.99, TRUE),
-('m', 'woman', 'Rosa', 'Adidas', 45, 23.25, TRUE),
-('s', 'unisex_kids', 'Amarillo', 'Puma', 60, 15.99, TRUE),
-('l', 'boy', 'Azul Marino', 'Nike', 25, 18.50, TRUE);
+INSERT INTO `tshirt` (`size`, `gender`, `color`, `brand`, `stock`, `price`, `active`, `image`) VALUES
+('m', 'man', 'Negro', 'Nike', 50, 25.99, TRUE, '/public/images/camisetaNegraMujer.jpg'),
+('l', 'woman', 'Blanco', 'Adidas', 30, 22.50, TRUE, 'https://www.futbolemotion.com/imagesarticulos/281104/330/camiseta-nike-fc-barcelona-cuarta-equipacion-2025-2026-gym-blue-gym-blue-salsa-red-0.jpg'),
+('xl', 'unisex', 'Azul', 'Puma', 25, 19.99, TRUE, 'https://www.futbolemotion.com/imagesarticulos/286278/330/camiseta-adidas-espana-primera-equipacion-mundial-2026-red-0.jpg'),
+('s', 'man', 'Rojo', 'Under Armour', 40, 28.75, TRUE, 'paco'),
+('m', 'woman', 'Verde', 'New Balance', 35, 21.99, TRUE, 'paco'),
+('l', 'unisex', 'Gris', 'Champion', 20, 17.50, TRUE, 'paco'),
+('xl', 'man', 'Negro', 'Nike', 15, 26.99, TRUE, 'paco'),
+('m', 'woman', 'Rosa', 'Adidas', 45, 23.25, TRUE, 'paco'),
+('s', 'unisex_kids', 'Amarillo', 'Puma', 60, 15.99, TRUE, 'paco'),
+('l', 'boy', 'Azul Marino', 'Nike', 25, 18.50, TRUE, 'paco');
 
 INSERT INTO `payment_method` (`user_id`, `card_type`, `last_four`, `expiry_month`, `expiry_year`, `is_default`) VALUES
 (2, 'VISA', '1234', 12, 2025, TRUE),
