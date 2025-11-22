@@ -2,22 +2,22 @@ extends ../../layouts/generalLayout
 
 block content
     .cart-container
-        h1 Carrito de Compra
+        h1 Shopping Cart
 
         if items.length === 0
-            p Tu carrito está vacío.
-            a(href="/tshirt" class="btn btn-primary") Ver productos
+            p Your cart is empty.
+            a(href="/tshirt" class="btn btn-primary") View products
         else
             table.cart-table
                 thead
                     tr
-                        th Producto
+                        th Product
                         th Color
-                        th Talla
-                        th Cantidad
-                        th Precio
+                        th Size
+                        th Quantity
+                        th Price
                         th Subtotal
-                        th Acciones
+                        th Actions
 
                 tbody
                     each item in items
@@ -26,7 +26,7 @@ block content
                             td #{item.color}
                             td #{item.size}
 
-                            // Cantidad con botones + y -
+                            // Quantity with + and -
                             td
                                 a.btn-minus(href=`/cart/del/tshirt/${item.id}`) −
                                 span.qty #{item.quantity}
@@ -45,4 +45,4 @@ block content
                 a(
                     href="/cart/checkout"
                     class="btn btn-success"
-                ) Procesar compra
+                ) Checkout

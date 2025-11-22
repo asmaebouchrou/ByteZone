@@ -1,26 +1,26 @@
 extends ../../layouts/generalLayout
 
 block content
-    h1 Detalle del pedido ##{order.id}
+    h1 Order Details ##{order.id}
 
     p 
-        strong Fecha: 
+        strong Date: 
         | #{order.date.toLocaleDateString()}
 
     p 
-        strong Estado: 
+        strong Status: 
         | #{order.status}
 
-    h2 Productos del pedido
+    h2 Order Items
 
     table
         thead
             tr
-                th Producto
+                th Product
                 th Color
-                th Talla
-                th Cantidad
-                th Precio
+                th Size
+                th Quantity
+                th Price
                 th Subtotal
         tbody
             each item in items
@@ -34,4 +34,4 @@ block content
 
     h2 Total: #{(parseFloat(order.total) || 0).toFixed(2)} €
 
-    a.btn(href="/orders") Volver al listado
+    a.btn(href="/orders") Back to Orders List
