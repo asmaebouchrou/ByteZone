@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 3000;
 const authRoutes = require('./routes/authRouter');
 const profileRoutes = require('./routes/profileRouter');
 const tshirtsRoutes = require('./routes/tshirtsRouter');
+const cartRoutes = require('./routes/cart.routes');
+
 
 //AUTH MIDDLEWARES
 const { isAuthenticated, isAdmin } = require('./middlewares/auth');
@@ -47,7 +49,6 @@ app.use('/profile',isAuthenticated, profileRoutes);
 app.use('/tshirt', tshirtsRoutes);
 
 // Rutas que hace falta estar loggeado
-// app.use('/cart', isAuthenticated, cartRoutes);
 // app.use('/profile', isAuthenticated, profileRoutes);
 // app.use('/orders', isAuthenticated, orderRoutes);
 
@@ -55,7 +56,7 @@ app.use('/tshirt', tshirtsRoutes);
 // app.use('/admin', isAdmin, adminRoutes);
 
 //Ruta para ir al carrito
-const cartRoutes = require('./routes/cart.routes');
+//isAuthenticated lo he hecho en el cart.routes,por lo cual no hace falta ponerlo aqui 
 app.use('/', cartRoutes);
 
 // Página principal

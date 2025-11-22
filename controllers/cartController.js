@@ -3,131 +3,182 @@ const db = require("../config/database");
 
 module.exports = {
 
-    // ---------------------------------------------------------
-    // VER CARRITO
-    // ---------------------------------------------------------
-    async viewCart(req, res) {
+
+    viewCart(req, res) {
         const clientId = req.session.user.id;
 
-        let [rows] = await CartModel.getUserCart(clientId);
-        if (rows.length === 0) {
-            await CartModel.createCart(clientId);
-            [rows] = await CartModel.getUserCart(clientId);
-        }
+        CartModel.getUserCart(clientId)
+            .then(([rows]) => {
+                if (rows.length === 0) {
+                    return CartModel.createCart(clientId)
+                        .then(() => CartModel.getUserCart(clientId));
+                }
+                return [rows];
+            })
+            .then(([rows]) => {
+                const cart = rows[0];
+                cart.total = Number(cart.total);
 
-        const cart = rows[0];
-        cart.total = Number(cart.total);
+                CartModel.getCartItems(cart.id)
+                    .then(([items]) => {
+                        items = items.map(i => ({
+                            ...i,
+                            sale_price: Number(i.sale_price),
+                            quantity: Number(i.quantity)
+                        }));
 
-        let [items] = await CartModel.getCartItems(cart.id);
-
-        items = items.map(i => ({
-            ...i,
-            sale_price: Number(i.sale_price),
-            quantity: Number(i.quantity)
-        }));
-
-        res.render("client/cart/index", {
-            cart,
-            items
-        });
+                        res.render("client/cart/index", {
+                            cart,
+                            items
+                        });
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        res.redirect("/cart");
+                    });
+            })
+            .catch(err => {
+                console.error(err);
+                res.redirect("/cart");
+            });
     },
 
-    // ---------------------------------------------------------
-    // AÑADIR PRODUCTO
-    // ---------------------------------------------------------
-    async addItem(req, res) {
+    addItem(req, res) {
         const clientId = req.session.user.id;
         const productId = req.params.id;
 
-        let [rows] = await CartModel.getUserCart(clientId);
-        if (rows.length === 0) {
-            await CartModel.createCart(clientId);
-            [rows] = await CartModel.getUserCart(clientId);
-        }
+        CartModel.getUserCart(clientId)
+            .then(([rows]) => {
+                if (rows.length === 0) {
+                    return CartModel.createCart(clientId)
+                        .then(() => CartModel.getUserCart(clientId));
+                }
+                return [rows];
+            })
+            .then(([rows]) => {
+                const cart = rows[0];
 
-        const cart = rows[0];
-        const [itemRows] = await CartModel.findItemInCart(cart.id, productId);
+                CartModel.findItemInCart(cart.id, productId)
+                    .then(([itemRows]) => {
 
-        if (itemRows.length > 0) {
-            await CartModel.increaseQuantity(itemRows[0].id);
-        } else {
-            const [[product]] = await db.query(
-                "SELECT price FROM tshirt WHERE id = ?",
-                [productId]
-            );
-            if (!product) return res.redirect("/cart");
+                        if (itemRows.length > 0) {
+                            return CartModel.increaseQuantity(itemRows[0].id)
+                                .then(() => cart.id);
+                        } else {
+                            return db.query("SELECT price FROM tshirt WHERE id = ?", [productId])
+                                .then(([[product]]) => {
+                                    if (!product) return res.redirect("/cart");
 
-            await CartModel.insertItem(cart.id, productId, product.price);
-        }
+                                    return CartModel.insertItem(cart.id, productId, product.price)
+                                        .then(() => cart.id);
+                                });
+                        }
 
-        await CartModel.updateCartTotal(cart.id);
-
-        res.redirect("/cart");
+                    })
+                    .then(cartId => {
+                        return CartModel.updateCartTotal(cartId);
+                    })
+                    .then(() => {
+                        res.redirect("/cart");
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        res.redirect("/cart");
+                    });
+            })
+            .catch(err => {
+                console.error(err);
+                res.redirect("/cart");
+            });
     },
 
-    // ---------------------------------------------------------
-    // QUITAR PRODUCTO
-    // ---------------------------------------------------------
-    async removeItem(req, res) {
+
+    removeItem(req, res) {
         const lineId = req.params.id;
         const fullDelete = req.query.full === "1";
 
-        const [[line]] = await db.query(
-            "SELECT * FROM customer_order_line WHERE id = ?",
-            [lineId]
-        );
+        db.query("SELECT * FROM customer_order_line WHERE id = ?", [lineId])
+            .then(([[line]]) => {
 
-        if (!line) return res.redirect("/cart");
+                if (!line) return res.redirect("/cart");
 
-        if (fullDelete) {
-            await CartModel.deleteItem(lineId);
-        } else if (line.quantity > 1) {
-            await CartModel.decreaseQuantity(lineId);
-        } else {
-            await CartModel.deleteItem(lineId);
-        }
+                let action;
 
-        await CartModel.updateCartTotal(line.customer_order);
+                if (fullDelete) {
+                    action = CartModel.deleteItem(lineId);
+                } else if (line.quantity > 1) {
+                    action = CartModel.decreaseQuantity(lineId);
+                } else {
+                    action = CartModel.deleteItem(lineId);
+                }
 
-        res.redirect("/cart");
+                action
+                    .then(() => CartModel.updateCartTotal(line.customer_order))
+                    .then(() => res.redirect("/cart"))
+                    .catch(err => {
+                        console.error(err);
+                        res.redirect("/cart");
+                    });
+
+            })
+            .catch(err => {
+                console.error(err);
+                res.redirect("/cart");
+            });
     },
 
-    // ---------------------------------------------------------
-    // PANTALLA DE CHECKOUT
-    // ---------------------------------------------------------
-    async processView(req, res) {
+    processView(req, res) {
         const clientId = req.session.user.id;
 
-        const [[cart]] = await CartModel.getUserCart(clientId);
-        const [items] = await CartModel.getCartItems(cart.id);
-
-        res.render("client/cart/process", {
-            cart,
-            items
-        });
+        CartModel.getUserCart(clientId)
+            .then(([[cart]]) => {
+                CartModel.getCartItems(cart.id)
+                    .then(([items]) => {
+                        res.render("client/cart/process", {
+                            cart,
+                            items
+                        });
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        res.redirect("/cart");
+                    });
+            })
+            .catch(err => {
+                console.error(err);
+                res.redirect("/cart");
+            });
     },
 
-    // ---------------------------------------------------------
-    // PROCESAR COMPRA
-    // ---------------------------------------------------------
-    async processBuy(req, res) {
+    processBuy(req, res) {
         const clientId = req.session.user.id;
 
-        const [[cart]] = await CartModel.getUserCart(clientId);
+        CartModel.getUserCart(clientId)
+            .then(([[cart]]) => {
 
-        await db.query(
-            `UPDATE customer_order 
-             SET status='paid'
-             WHERE id = ?`,
-            [cart.id]
-        );
+                db.query(
+                    "UPDATE customer_order SET status='paid' WHERE id = ?",
+                    [cart.id]
+                )
+                .then(() => {
+                    return db.query(
+                        `INSERT INTO payment (customer_order_id, amount, status)
+                         VALUES (?, ?, 'COMPLETED')`,
+                        [cart.id, cart.total]
+                    );
+                })
+                .then(() => {
+                    res.redirect(`/orders/${cart.id}`);
+                })
+                .catch(err => {
+                    console.error(err);
+                    res.redirect("/cart");
+                });
 
-        await db.query(
-            `INSERT INTO payment (customer_order_id, amount, status)
-             VALUES (?, ?, 'COMPLETED')`,
-            [cart.id, cart.total]
-        );
-
-        res.redirect(`/orders/${cart.id}`);
+            })
+            .catch(err => {
+                console.error(err);
+                res.redirect("/cart");
+            });
     }
 };
