@@ -129,28 +129,38 @@ module.exports = {
             });
     },
 
-    processView(req, res) {
-        const clientId = req.session.user.id;
+  processView(req, res) {
+    const clientId = req.session.user.id;
 
-        CartModel.getUserCart(clientId)
-            .then(([[cart]]) => {
-                CartModel.getCartItems(cart.id)
-                    .then(([items]) => {
-                        res.render("client/cart/process", {
-                            cart,
-                            items
-                        });
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        res.redirect("/cart");
+    CartModel.getUserCart(clientId)
+        .then(([[cart]]) => {
+
+            cart.total = Number(cart.total);
+
+            CartModel.getCartItems(cart.id)
+                .then(([items]) => {
+
+                    items = items.map(i => ({
+                        ...i,
+                        sale_price: Number(i.sale_price),
+                        quantity: Number(i.quantity)
+                    }));
+
+                    res.render("client/cart/process", {
+                        cart,
+                        items
                     });
-            })
-            .catch(err => {
-                console.error(err);
-                res.redirect("/cart");
-            });
-    },
+                })
+                .catch(err => {
+                    console.error(err);
+                    res.redirect("/cart");
+                });
+        })
+        .catch(err => {
+            console.error(err);
+            res.redirect("/cart");
+        });
+},
 
     processBuy(req, res) {
         const clientId = req.session.user.id;
@@ -162,20 +172,20 @@ module.exports = {
                     "UPDATE customer_order SET status='paid' WHERE id = ?",
                     [cart.id]
                 )
-                .then(() => {
-                    return db.query(
-                        `INSERT INTO payment (customer_order_id, amount, status)
+                    .then(() => {
+                        return db.query(
+                            `INSERT INTO payment (customer_order_id, amount, status)
                          VALUES (?, ?, 'COMPLETED')`,
-                        [cart.id, cart.total]
-                    );
-                })
-                .then(() => {
-                    res.redirect(`/orders/${cart.id}`);
-                })
-                .catch(err => {
-                    console.error(err);
-                    res.redirect("/cart");
-                });
+                            [cart.id, cart.total]
+                        );
+                    })
+                    .then(() => {
+                        res.redirect(`/orders/${cart.id}`);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        res.redirect("/cart");
+                    });
 
             })
             .catch(err => {

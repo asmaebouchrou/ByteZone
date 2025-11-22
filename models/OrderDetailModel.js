@@ -2,7 +2,8 @@ const db = require("../config/database");
 
 module.exports = {
 
-    async getDetailsByOrderId(orderId) {
+
+    getDetailsByOrderId(orderId, callback) {
         const sql = `
             SELECT 
                 col.id,
@@ -15,8 +16,9 @@ module.exports = {
             JOIN tshirt ON tshirt.id = col.product
             WHERE col.customer_order = ?
         `;
-        const [rows] = await db.query(sql, [orderId]);
-        return rows;
-    }
 
+        db.query(sql, [orderId])
+            .then(([rows]) => callback(null, rows))
+            .catch(err => callback(err, null));
+    }
 };

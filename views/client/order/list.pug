@@ -1,19 +1,20 @@
 extends ../../layouts/generalLayout
 
 block content
-    h1 Mis pedidos
+    h1 My orders
 
     if orders.length === 0
-        p No tienes pedidos todavía.
+        p You don't have orders yet.
+
     else
         table.order-table
             thead
                 tr
                     th ID
-                    th Fecha
-                    th Estado
+                    th Date
+                    th state
                     th Total
-                    th Acción
+                    th Action
             tbody
                 each o in orders
                     tr
@@ -22,4 +23,4 @@ block content
                         td #{o.status}
                         td #{(parseFloat(o.total) || 0).toFixed(2)} €
                         td 
-                            a.btn(href=`/orders/${o.id}`) Ver detalle
+                            a.btn(href=`/orders/${o.id}`) See details

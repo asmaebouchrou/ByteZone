@@ -3,47 +3,70 @@ const OrderDetailModel = require('../models/OrderDetailModel');
 
 module.exports = {
 
-    // LISTA DE PEDIDOS
-    async orderList(req, res) {
+ 
+    orderList(req, res) {
         const userId = req.session.user.id;
 
-        let orders = await OrderModel.getOrdersByUser(userId);
+        OrderModel.getOrdersByUser(userId, (err, orders) => {
+            if (err) {
+                console.error("ERROR loading orders:", err);
+                return res.redirect('/');
+            }
 
-        orders = orders.map(o => {
-            o = JSON.parse(JSON.stringify(o));
-            o.total = parseFloat(o.total) || 0;
-            return o;
+            // Aplanar y convertir números
+            orders = orders.map(o => {
+                const order = { ...o };
+                order.total = parseFloat(order.total) || 0;
+                return order;
+            });
+
+            res.render("client/order/list", { orders });
         });
-
-        res.render("client/order/list", { orders });
     },
 
-    // DETALLE DE UN PEDIDO
-    async orderDetail(req, res) {
+    orderDetail(req, res) {
         const userId = req.session.user.id;
         const orderId = req.params.id;
 
-        let order = await OrderModel.getOrderById(orderId, userId);
-        if (!order) return res.redirect("/orders");
+        OrderModel.getOrderById(orderId, userId, (err, order) => {
+            if (err) {
+                console.error("ERROR loading order:", err);
+                return res.redirect('/orders');
+            }
 
-        // Aplanar pedido
-        order = JSON.parse(JSON.stringify(order));
-        order.total = parseFloat(order.total) || 0;
+            if (!order) {
+                // Pedido no existe o no pertenece a ese usuario
+                return res.redirect('/orders');
+            }
 
-        let items = await OrderDetailModel.getDetailsByOrderId(orderId);
+            // Convertir pedido a formato plano
+            order = {
+                ...order,
+                total: parseFloat(order.total) || 0
+            };
 
-        items = items.map(i => {
-            // Aplanar
-            i = JSON.parse(JSON.stringify(i));
+            // Cargar líneas del pedido
+            OrderDetailModel.getDetailsByOrderId(orderId, (err, items) => {
+                if (err) {
+                    console.error("ERROR loading order items:", err);
+                    return res.redirect('/orders');
+                }
 
-            // Convertir numéricos
-            i.sale_price = parseFloat(i.sale_price) || 0;
-            i.quantity = parseInt(i.quantity) || 0;
+                // Aplanar conversiones numéricas
+                items = items.map(i => {
+                    return {
+                        ...i,
+                        sale_price: parseFloat(i.sale_price) || 0,
+                        quantity: parseInt(i.quantity) || 0
+                    };
+                });
 
-            return i;
+                res.render("client/order/detail", {
+                    order,
+                    items
+                });
+            });
         });
-
-        res.render("client/order/detail", { order, items });
     }
 
 };

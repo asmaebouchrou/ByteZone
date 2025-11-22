@@ -1,16 +1,16 @@
 //extends ../../../layouts/generalLayout
 
 block content
-    h1 Confirmar compra
+    h1 Confirm Purchase
 
     table
         thead
             tr
-                th Producto
+                th Product
                 th Color
-                th Talla
-                th Cantidad
-                th Precio
+                th Size
+                th Quantity
+                th Price
                 th Subtotal
         tbody
             each item in items
@@ -25,4 +25,4 @@ block content
     h2 Total: #{cart.total.toFixed(2)} €
 
     form(method="POST")
-        button.btn.btn-success(type="submit") Confirmar pago
+        button.btn.btn-success(type="submit") Confirm Payment

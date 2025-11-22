@@ -12,6 +12,8 @@ const authRoutes = require('./routes/authRouter');
 const profileRoutes = require('./routes/profileRouter');
 const tshirtsRoutes = require('./routes/tshirtsRouter');
 const cartRoutes = require('./routes/cart.routes');
+const orderRoutes = require('./routes/order.routes');
+
 
 
 //AUTH MIDDLEWARES
@@ -45,7 +47,7 @@ app.use(
 //ROUTES
 //Publicas
 app.use('/auth', authRoutes);
-app.use('/profile',isAuthenticated, profileRoutes);
+app.use('/profile', isAuthenticated, profileRoutes);
 app.use('/tshirt', tshirtsRoutes);
 
 // Rutas que hace falta estar loggeado
@@ -58,6 +60,10 @@ app.use('/tshirt', tshirtsRoutes);
 //Ruta para ir al carrito
 //isAuthenticated lo he hecho en el cart.routes,por lo cual no hace falta ponerlo aqui 
 app.use('/', cartRoutes);
+
+//ruta para ir a pedidos
+app.use('/', orderRoutes);
+
 
 // Página principal
 app.get('/', (req, res) => {
