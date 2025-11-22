@@ -1,30 +1,41 @@
 doctype html
 html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title register 
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Sign Up
+  body
+    h1 User Registration
+    if error
+  .alert.alert-danger(role="alert")
+    | #{error}
+    if success
+  .alert.alert-success #{success}
 
-        h1 register 
-        form(action="post" onclick="validarContrasenna()")
-            input(type="text" placeholder="Full name" required)
-            br
-            input(type="email" placeholder="Email" required)
-            br
-            input(type="password" placeholder="Password" id="password"  required minlength="5")
-            br
-            input(type="repeat_password" placeholder="Repeat password" id="repeat_password"  required minlength="5")
-            br
-            button(type="submit" ) Sign up
-    body 
+    form(action="/auth/signup" method="post" onsubmit="return validatePassword()")
+      input(type="text" name="username" placeholder="Full Name" required)
+      br
+      input(type="email" name="email" placeholder="Email Address" required)
+      br
+      input(type="text" name="address" placeholder="Address" required)
+      br
+      input(type="text" name="phone" placeholder="Phone number" required)
+      br
+      input(type="password" name="password" id="password" placeholder="Password" required minlength="5")
+      br
+      input(type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required minlength="5")
+      br
+      button(type="submit") Create Account
+      br
+      a(href="/auth/login") Already have an account?
 
-    script 
-        fuction validarContrasenna(){
-            let contrasena = document.getElementById('contrasena').value;
-            let contrasenaRepetida = document.getElementById('contrasenaRepetida').value;
-            if (!(contrasena===contrasenaRepetida)){
-                alert("Las contraseñas no coinciden, introducelas de nuevo");
-                return false;
-            }
-
+    script.
+      function validatePassword() {
+        const password = document.getElementById('password').value;
+        const confirm = document.getElementById('confirmPassword').value;
+        if (password !== confirm) {
+          alert("Passwords do not match. Please try again.");
+          return false;
         }
+        return true;
+      }

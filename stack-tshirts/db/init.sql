@@ -5,7 +5,7 @@ USE `tshirts`;
 
 CREATE TABLE `user` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(50) NOT NULL UNIQUE,
+  `username` VARCHAR(255) NOT NULL,
   `email` VARCHAR(100) NOT NULL UNIQUE,
   `phone` VARCHAR(20),
   `address` VARCHAR(255),
@@ -52,6 +52,7 @@ CREATE TABLE `tshirt` (
   `stock` INT UNSIGNED NOT NULL DEFAULT 0,
   `price` DECIMAL(8,2) NOT NULL,
   `active` BOOLEAN,
+  `image` VARCHAR(255),            
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -95,6 +96,14 @@ CREATE TABLE `payment` (
   INDEX `idx_transaction_id` (`transaction_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE reset_tokens (
+    user_id INT UNSIGNED NOT NULL,
+    token VARCHAR(128) NOT NULL UNIQUE,
+    expires_at DATETIME NOT NULL,
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 INSERT INTO `user` (`username`, `email`, `phone`, `address`, `role`) VALUES
 ('admin_user', 'admin@tshirtstore.com', '+34123456789', 'Calle Principal 123, Madrid', 'OPERATOR'),
@@ -108,17 +117,18 @@ INSERT INTO `password` (`user_id`, `password_hash`) VALUES
 (3, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'), 
 (4, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'); 
 
-INSERT INTO `tshirt` (`size`, `gender`, `color`, `brand`, `stock`, `price`, `active`) VALUES
-('m', 'man', 'Negro', 'Nike', 50, 25.99, TRUE),
-('l', 'woman', 'Blanco', 'Adidas', 30, 22.50, TRUE),
-('xl', 'unisex', 'Azul', 'Puma', 25, 19.99, TRUE),
-('s', 'man', 'Rojo', 'Under Armour', 40, 28.75, TRUE),
-('m', 'woman', 'Verde', 'New Balance', 35, 21.99, TRUE),
-('l', 'unisex', 'Gris', 'Champion', 20, 17.50, TRUE),
-('xl', 'man', 'Negro', 'Nike', 15, 26.99, TRUE),
-('m', 'woman', 'Rosa', 'Adidas', 45, 23.25, TRUE),
-('s', 'unisex_kids', 'Amarillo', 'Puma', 60, 15.99, TRUE),
-('l', 'boy', 'Azul Marino', 'Nike', 25, 18.50, TRUE);
+INSERT INTO `tshirt` (`size`, `gender`, `color`, `brand`, `stock`, `price`, `active`, `image`) VALUES
+('m', 'man', 'Negro', 'Nike', 50, 25.99, TRUE, '/public/images/camisetaNegraMujer.jpg'),
+('l', 'woman', 'Blanco', 'Adidas', 30, 22.50, TRUE, 'paco'),
+('xl', 'unisex', 'Azul', 'Puma', 25, 19.99, TRUE, 'paco'),
+('s', 'man', 'Rojo', 'Under Armour', 40, 28.75, TRUE, 'paco'),
+('m', 'woman', 'Verde', 'New Balance', 35, 21.99, TRUE, 'paco'),
+('l', 'unisex', 'Gris', 'Champion', 20, 17.50, TRUE, 'paco'),
+('xl', 'man', 'Negro', 'Nike', 15, 26.99, TRUE, 'paco'),
+('m', 'woman', 'Rosa', 'Adidas', 45, 23.25, TRUE, 'paco'),
+('s', 'unisex_kids', 'Amarillo', 'Puma', 60, 15.99, TRUE, 'paco'),
+('l', 'boy', 'Azul Marino', 'Nike', 25, 18.50, TRUE, 'paco');
+
 
 INSERT INTO `payment_method` (`user_id`, `card_type`, `last_four`, `expiry_month`, `expiry_year`, `is_default`) VALUES
 (2, 'VISA', '1234', 12, 2025, TRUE),
