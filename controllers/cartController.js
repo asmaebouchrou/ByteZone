@@ -161,36 +161,75 @@ module.exports = {
             res.redirect("/cart");
         });
 },
+processBuy(req, res) {
+    const clientId = req.session.user.id;
 
-    processBuy(req, res) {
-        const clientId = req.session.user.id;
+    CartModel.getUserCart(clientId)
+        .then(([[cart]]) => {
 
-        CartModel.getUserCart(clientId)
-            .then(([[cart]]) => {
+            cart.total = Number(cart.total);
 
-                db.query(
-                    "UPDATE customer_order SET status='paid' WHERE id = ?",
-                    [cart.id]
-                )
-                    .then(() => {
-                        return db.query(
-                            `INSERT INTO payment (customer_order_id, amount, status)
+            db.query(
+                "UPDATE customer_order SET status='paid' WHERE id = ?",
+                [cart.id]
+            )
+                .then(() => {
+                    return db.query(
+                        `INSERT INTO payment (customer_order_id, amount, status)
                          VALUES (?, ?, 'COMPLETED')`,
-                            [cart.id, cart.total]
-                        );
-                    })
-                    .then(() => {
-                        res.redirect(`/orders/${cart.id}`);
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        res.redirect("/cart");
+                        [cart.id, cart.total]
+                    );
+                })
+                .then(() => {
+
+                    return CartModel.getCartItems(cart.id).then(([items]) => {
+                        return { cart, items };
                     });
 
-            })
-            .catch(err => {
-                console.error(err);
-                res.redirect("/cart");
-            });
-    }
+                })
+                .then(({ cart, items }) => {
+                    //  email de confirmacion
+                    const user = req.session.user;
+
+                    const itemsHTML = items.map(i => `
+                        <li>
+                            ${i.quantity} × ${i.brand} (${i.size}, ${i.color}) —
+                            ${(Number(i.sale_price)).toFixed(2)} €
+                        </li>
+                    `).join("");
+
+                    const html = `
+                        <h2>Thanks for your purchase, ${user.username}!</h2>
+                        <p>Your order has been successfully paid.</p>
+
+                        <h3>Order Summary:</h3>
+                        <ul>${itemsHTML}</ul>
+
+                        <h3>Total: ${cart.total.toFixed(2)} €</h3>
+
+                        <p>You will receive another email once your order is shipped.</p>
+                        <p>Thank you for shopping at T-Shirt Store!</p>
+                    `;
+
+                    transporter.sendMail({
+                        from: '"T-Shirt Store" <noreply@tshirtstore.com>',
+                        to: user.email,
+                        subject: `Order Confirmation #${cart.id}`,
+                        html
+                    }).catch(err => console.error("EMAIL ERROR:", err));
+
+                    res.redirect(`/orders/${cart.id}`);
+                })
+                .catch(err => {
+                    console.error(err);
+                    res.redirect("/cart");
+                });
+
+        })
+        .catch(err => {
+            console.error(err);
+            res.redirect("/cart");
+        });
+}
+
 };
