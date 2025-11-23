@@ -4,6 +4,7 @@ module.exports.isAuthenticated = (req, res, next) => {
     return next();
   }
   console.log("Not logged in → redirect to /auth/login");
+  req.session.redirectTo = req.originalUrl;
   return res.redirect('/auth/login');
 };
 

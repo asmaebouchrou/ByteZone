@@ -54,11 +54,19 @@ module.exports = {
 
       console.log(`User ${user.username} logged in`);
 
+      /*  if (user.role === 'admin') {
+          res.redirect('/admin');
+        } else {
+          res.redirect('/profile');
+        }*/
+
       if (user.role === 'admin') {
-        res.redirect('/admin');
-      } else {
-        res.redirect('/profile');
+        return res.redirect('/admin');
       }
+      let redirectTo = req.session.redirectTo || '/profile';
+      delete req.session.redirectTo;
+
+      res.redirect(redirectTo);
 
     } catch (error) {
       console.error('Error at login:', error);
@@ -203,99 +211,99 @@ module.exports = {
     const { token } = req.params;
 
     try {
-        const [rows] = await db.query(
-            `SELECT user_id, expires_at FROM reset_tokens WHERE token = ?`,
-            [token]
-        );
+      const [rows] = await db.query(
+        `SELECT user_id, expires_at FROM reset_tokens WHERE token = ?`,
+        [token]
+      );
 
-        if (rows.length === 0) {
-            return res.render('auth/reset-password', {
-                error: 'Invalid or expired password reset link.'
-            });
-        }
-
-        const tokenData = rows[0];
-        const now = new Date();
-
-        if (now > tokenData.expires_at) {
-            return res.render('auth/reset-password', {
-                error: 'This reset link has expired. Please request a new one.'
-            });
-        }
-
+      if (rows.length === 0) {
         return res.render('auth/reset-password', {
-            token
+          error: 'Invalid or expired password reset link.'
         });
+      }
+
+      const tokenData = rows[0];
+      const now = new Date();
+
+      if (now > tokenData.expires_at) {
+        return res.render('auth/reset-password', {
+          error: 'This reset link has expired. Please request a new one.'
+        });
+      }
+
+      return res.render('auth/reset-password', {
+        token
+      });
 
     } catch (err) {
-        console.error("Reset password form error:", err);
-        return res.render('auth/reset-password', {
-            error: 'Server error. Try again later.'
-        });
+      console.error("Reset password form error:", err);
+      return res.render('auth/reset-password', {
+        error: 'Server error. Try again later.'
+      });
     }
-},
-processNewPassword: async (req, res) => {
+  },
+  processNewPassword: async (req, res) => {
     const { token } = req.params;
     const { newPassword, confirmPassword } = req.body;
 
     if (!newPassword || !confirmPassword) {
-        return res.render('auth/reset-password', {
-            error: 'Please fill in all fields.',
-            token
-        });
+      return res.render('auth/reset-password', {
+        error: 'Please fill in all fields.',
+        token
+      });
     }
 
     if (newPassword !== confirmPassword) {
-        return res.render('auth/reset-password', {
-            error: 'Passwords do not match.',
-            token
-        });
+      return res.render('auth/reset-password', {
+        error: 'Passwords do not match.',
+        token
+      });
     }
 
     try {
-        const [rows] = await db.query(
-            `SELECT user_id, expires_at 
+      const [rows] = await db.query(
+        `SELECT user_id, expires_at 
              FROM reset_tokens
              WHERE token = ?`,
-            [token]
-        );
+        [token]
+      );
 
-        if (rows.length === 0) {
-            return res.render('auth/reset-password', {
-                error: 'Invalid or expired reset link.'
-            });
-        }
-
-        const { user_id, expires_at } = rows[0];
-
-        if (new Date() > expires_at) {
-            return res.render('auth/reset-password', {
-                error: 'This reset link has expired.',
-            });
-        }
-
-        // Hash new password
-        const hashed = await bcrypt.hash(newPassword, 10);
-
-        // Update real password
-        await db.query(
-            `UPDATE password SET password_hash = ? WHERE user_id = ?`,
-            [hashed, user_id]
-        );
-
-        // Delete reset token so it can’t be reused
-        await db.query(`DELETE FROM reset_tokens WHERE token = ?`, [token]);
-
-        return res.render('auth/login', {
-            success: 'Password updated successfully. You can now log in.'
+      if (rows.length === 0) {
+        return res.render('auth/reset-password', {
+          error: 'Invalid or expired reset link.'
         });
+      }
+
+      const { user_id, expires_at } = rows[0];
+
+      if (new Date() > expires_at) {
+        return res.render('auth/reset-password', {
+          error: 'This reset link has expired.',
+        });
+      }
+
+      // Hash new password
+      const hashed = await bcrypt.hash(newPassword, 10);
+
+      // Update real password
+      await db.query(
+        `UPDATE password SET password_hash = ? WHERE user_id = ?`,
+        [hashed, user_id]
+      );
+
+      // Delete reset token so it can’t be reused
+      await db.query(`DELETE FROM reset_tokens WHERE token = ?`, [token]);
+
+      return res.render('auth/login', {
+        success: 'Password updated successfully. You can now log in.'
+      });
 
     } catch (err) {
-        console.error("Reset password error:", err);
-        return res.render('auth/reset-password', {
-            error: 'Server error. Try again later.',
-            token
-        });
+      console.error("Reset password error:", err);
+      return res.render('auth/reset-password', {
+        error: 'Server error. Try again later.',
+        token
+      });
     }
-}
+  }
 };

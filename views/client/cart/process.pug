@@ -1,0 +1,28 @@
+//extends ../../../layouts/generalLayout
+
+block content
+    h1 Confirm Purchase
+
+    table
+        thead
+            tr
+                th Product
+                th Color
+                th Size
+                th Quantity
+                th Price
+                th Subtotal
+        tbody
+            each item in items
+                tr
+                    td= item.brand
+                    td= item.color
+                    td= item.size
+                    td= item.quantity
+                    td= item.sale_price.toFixed(2) + " €"
+                    td= (item.sale_price * item.quantity).toFixed(2) + " €"
+
+    h2 Total: #{cart.total.toFixed(2)} €
+
+    form(method="POST")
+        button.btn.btn-success(type="submit") Confirm Payment

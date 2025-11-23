@@ -1,0 +1,26 @@
+extends ../../layouts/generalLayout
+
+block content
+    h1 My orders
+
+    if orders.length === 0
+        p You don't have orders yet.
+
+    else
+        table.order-table
+            thead
+                tr
+                    th ID
+                    th Date
+                    th state
+                    th Total
+                    th Action
+            tbody
+                each o in orders
+                    tr
+                        td #{o.id}
+                        td #{o.date.toLocaleDateString()}
+                        td #{o.status}
+                        td #{(parseFloat(o.total) || 0).toFixed(2)} €
+                        td 
+                            a.btn(href=`/orders/${o.id}`) See details
