@@ -2,47 +2,38 @@ doctype html
 html(lang="en")
     head
         meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
         title Header
-        style.
-            .header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 20px;
-                border-bottom: 1px solid #ddd;
-            }
-            .icons {
-                display: flex;
-                gap: 15px;
-                align-items: center;
-            }
+        link(rel="stylesheet" href="/css/header.css")
+        script(src="/js/header.js")
 
-            
-            .logo {
-                height: 6rem;
-                width: auto;
-            }
-
-            
-            .icon {
-                height: 2rem;
-                width: auto;
-                margin-left:1rem;
-            }
-            .logoNavBar{
-                height: 3rem;
-                width: auto;
-            }
     body
-        div.header
-            a(href="") 
-                img(src="/images/logoNavBar.png" alt="" class="logoNavBar")
+        header.header
+            .header-left
+                a(href="/")
+                    img(src="/images/logoNavBar.png" alt="Logo pequeño" class="logo-small")
 
-            img.logo(src="/images/logoBueno.png", alt="logo")
+            nav.header-menu
+                ul
+                    li: a(href="/tshirts/woman") Woman
+                    li: a(href="/tshirts/man") Man
+                    li: a(href="/tshirts/unisex") Unisex
+                    li: a(href="/tshirts/boy") Boy
+                    li: a(href="/tshirts/girl") Girl
+                    li: a(href="/tshirts/unisex_kids") Unisex Kids
 
-            div.icons
-                a(href="/profile") 
-                    img.icon(src="/images/usrLog.png", alt="usuario")
-                a(href="/cart") 
-                    img.icon(src="/images/iconCart.png", alt="carrito")
+            .header-center
+                img(src="/images/logoBueno.png" alt="Main Logo" class="logo-main")
+
+            .header-search
+                input(type="text" placeholder="Search something...")
+                span.search-icon 🔍
+
+            .header-icons
+                a(href="/profile" class="icon-group")
+                    img(src="/images/usrLog.png" alt="Profile" class="icon")
+                    span.label Profile
+
+                a(href="/cart" class="icon-group")
+                    img(src="/images/iconCart.png" alt="Cart" class="icon")
+                    span.label Cart
