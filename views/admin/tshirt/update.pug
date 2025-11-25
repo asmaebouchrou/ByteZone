@@ -1,0 +1,66 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Update Tshirt
+    body
+        h1 Edit Tshirt
+
+        form(action='/admin/tshirt/update/' + tshirt.id method='POST')
+            table
+                tbody
+                    tr
+                        th ID
+                        td= tshirt.id
+                    tr
+                        th Marca
+                        td= tshirt.brand
+                    tr
+                        th Género
+                        td= tshirt.gender
+                    tr
+                        th Talla
+                        td
+                            input(
+                                type="text"
+                                name="size"
+                                value=tshirt.size
+                                required
+                            )
+                    tr
+                        th Color
+                        td
+                            input(
+                                type="text"
+                                name="color"
+                                value=tshirt.color
+                                required
+                            )
+                    tr
+                        th Precio
+                        td
+                            input(
+                                type="number"
+                                name="price"
+                                step="0.01"
+                                min="0"
+                                value=tshirt.price
+                                required
+                            )
+                    tr
+                        th Stock
+                        td
+                            input(
+                                type="number"
+                                name="stock"
+                                min="0"
+                                value=tshirt.stock
+                                required
+                            )
+                    tr
+                        td
+                            a(href="/admin/tshirt")
+                                button(type="button") Cancel
+                        td
+                            button(type="submit") Update Tshirt

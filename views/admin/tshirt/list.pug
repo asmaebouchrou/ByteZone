@@ -13,20 +13,23 @@ html(lang="en")
                     th Género
                     th Precio
                     th Stock
+                    th
+                    th
             tbody
                 each camiseta in tshirts
                     tr 
-                        td=camiseta.id
-                        td=camiseta.brand
-                        td=camiseta.gender
-                        td=camiseta.price
-                        td=camiseta.stock
+                        td= camiseta.id
+                        td= camiseta.brand
+                        td= camiseta.gender
+                        td= camiseta.price
+                        td= camiseta.stock
                         td
                             a(href="") 
                                 button Delete Tshirt
                         td  
-                            a(href="") 
+                            a(href="/admin/tshirt/update/" + camiseta.id) 
                                 button Edit Tshirt
-                td  
-                    a(href="/admin/tshirt/add") 
-                        button Add Tshirt
+                tr
+                    td(colspan="7")
+                        a(href="/admin/tshirt/add") 
+                            button Add Tshirt

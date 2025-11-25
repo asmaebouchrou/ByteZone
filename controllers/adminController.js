@@ -42,6 +42,63 @@ module.exports = {
         res.redirect('/admin/tshirt');
 
         
-    }
+    },
     
-}
+    // ========================
+    //        UPDATE
+    // ========================
+
+    // GET /admin/tshirt/update/:id → muestra el formulario con datos
+    updateTshirtGET: async (req, res) => {
+        const { id } = req.params;
+
+        try {
+            let [resultado] = await db.query(
+                'SELECT * FROM tshirt WHERE id = ?',
+                [id]
+            );
+
+            if (resultado.length === 0) {
+                return res.render('404', {
+                    mensaje: 'Tshirt not found'
+                });
+            }
+
+            res.render('admin/tshirt/update', {
+                tshirt: resultado[0]
+            });
+        } catch (error) {
+            res.render('error', {
+                mensaje: 'Error getting tshirt for update'
+            });
+        }
+    },
+
+    // POST /admin/tshirt/update/:id → guarda cambios
+    updateTshirtPOST: (req, res) => {
+        const { id } = req.params;
+        let { size, color, stock, price } = req.body;
+
+        // Validación simple
+        stock = Number(stock);
+        price = Number(price);
+
+        if (isNaN(stock) || isNaN(price) || stock < 0 || price < 0) {
+            return res.render('error', {
+                mensaje: 'Stock y precio deben ser números positivos'
+            });
+        }
+
+        const sql = 'UPDATE tshirt SET size = ?, color = ?, stock = ?, price = ? WHERE id = ?';
+
+        db.query(sql, [size, color, stock, price, id], (error, resultado) => {
+            if (error) {
+                return res.render('error', {
+                    mensaje: 'Error updating tshirt'
+                });
+            }
+
+            res.redirect('/admin/tshirt');
+        });
+    }
+};
