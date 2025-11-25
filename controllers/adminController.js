@@ -42,6 +42,57 @@ module.exports = {
         res.redirect('/admin/tshirt');
 
         
-    }
+    },
     
-}
+    // GET /admin/tshirt/delete/:id
+    deleteTshirtGET: async (req, res) => {
+        const { id } = req.params;
+
+        try {
+            let [resultado] = await db.query(
+                'SELECT * FROM tshirt WHERE id = ?',
+                [id]
+            );
+
+            if (resultado.length === 0) {
+                return res.render('404', {
+                    mensaje: 'Tshirt not found'
+                });
+            }
+
+            res.render('admin/tshirt/delete', {
+                tshirt: resultado[0]
+            });
+        } catch (error) {
+            console.error(error);
+            res.render('error', {
+                mensaje: 'Error getting tshirt for delete'
+            });
+        }
+    },
+
+    // POST /admin/tshirt/delete/:id
+    deleteTshirtPOST: async (req, res) => {
+        const { id } = req.params;
+
+        const sql = 'DELETE FROM tshirt WHERE id = ?';
+
+        try {
+            await db.query(sql, [id]);
+
+            res.redirect('/admin/tshirt');
+        } catch (error) {
+            console.error(error);
+
+            if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+                return res.render('error', {
+                    mensaje: 'No se puede eliminar la camiseta porque tiene pedidos asociados.'
+                });
+            }
+
+            res.render('error', {
+                mensaje: 'Error deleting tshirt'
+            });
+        }
+    }
+};
