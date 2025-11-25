@@ -57,6 +57,7 @@ app.use('/admin/tshirt', adminRoutes);
 
 // Rutas de admin, aqui va el panel de admin
 // app.use('/admin', isAdmin, adminRoutes);
+app.use('/admin/tshirt', adminRoutes);
 
 // Página principal
 app.get('/', (req, res) => {

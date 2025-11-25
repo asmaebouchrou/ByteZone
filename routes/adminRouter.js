@@ -16,5 +16,8 @@ router.get('/update/:id', adminController.updateTshirtGET);
 
 // EDITAR -> POST /admin/tshirt/update/:id
 router.post('/update/:id', adminController.updateTshirtPOST);
+router.get('/delete/:id', adminController.deleteTshirtGET);
+router.post('/delete/:id', adminController.deleteTshirtPOST);
+
 
 module.exports = router;
