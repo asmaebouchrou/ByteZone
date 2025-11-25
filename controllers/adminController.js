@@ -100,8 +100,8 @@ module.exports = {
 
             res.redirect('/admin/tshirt');
         });
-    }
-};
+    },
+
     // GET /admin/tshirt/delete/:id
     deleteTshirtGET: async (req, res) => {
         const { id } = req.params;
@@ -154,3 +154,4 @@ module.exports = {
         }
     }
 };
+    
