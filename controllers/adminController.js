@@ -43,10 +43,6 @@ module.exports = {
 
         
     },
-    
-    // ========================
-    //        UPDATE
-    // ========================
 
     // GET /admin/tshirt/update/:id → muestra el formulario con datos
     updateTshirtGET: async (req, res) => {
@@ -68,14 +64,14 @@ module.exports = {
                 tshirt: resultado[0]
             });
         } catch (error) {
-            res.render('error', {
+            res.render('404', {
                 mensaje: 'Error getting tshirt for update'
             });
         }
     },
 
     // POST /admin/tshirt/update/:id → guarda cambios
-    updateTshirtPOST: (req, res) => {
+    updateTshirtPOST: async (req, res) => {
         const { id } = req.params;
         let { size, color, stock, price } = req.body;
 
@@ -91,15 +87,16 @@ module.exports = {
 
         const sql = 'UPDATE tshirt SET size = ?, color = ?, stock = ?, price = ? WHERE id = ?';
 
-        db.query(sql, [size, color, stock, price, id], (error, resultado) => {
-            if (error) {
-                return res.render('error', {
-                    mensaje: 'Error updating tshirt'
-                });
-            }
+        try {
+            await db.query(sql, [size, color, stock, price, id]);
 
-            res.redirect('/admin/tshirt');
-        });
+            return res.redirect('/admin/tshirt');
+        } catch (error) {
+            console.error(error);
+            return res.render('404', {
+                mensaje: 'Error updating tshirt'
+            });
+        }
     },
 
     // GET /admin/tshirt/delete/:id
@@ -123,7 +120,7 @@ module.exports = {
             });
         } catch (error) {
             console.error(error);
-            res.render('error', {
+            res.render('404', {
                 mensaje: 'Error getting tshirt for delete'
             });
         }
@@ -132,25 +129,38 @@ module.exports = {
     // POST /admin/tshirt/delete/:id
     deleteTshirtPOST: async (req, res) => {
         const { id } = req.params;
-
-        const sql = 'DELETE FROM tshirt WHERE id = ?';
+        const sqlDelete = 'DELETE FROM tshirt WHERE id = ?';
 
         try {
-            await db.query(sql, [id]);
+            // intentamos borrar
+            await db.query(sqlDelete, [id]);
+            return res.redirect('/admin/tshirt');
 
-            res.redirect('/admin/tshirt');
         } catch (error) {
             console.error(error);
 
             if (error.code === 'ER_ROW_IS_REFERENCED_2') {
-                return res.render('error', {
-                    mensaje: 'No se puede eliminar la camiseta porque tiene pedidos asociados.'
-                });
+                try {
+                    const [rows] = await db.query(
+                        'SELECT * FROM tshirt WHERE id = ?',
+                        [id]
+                    );
+
+                    if (rows.length === 0) {
+                        return res.redirect('/admin/tshirt');
+                    }
+
+                    return res.render('admin/tshirt/delete', {
+                        tshirt: rows[0],
+                        mensajeError: 'No se puede eliminar la camiseta porque tiene pedidos asociados.'
+                    });
+                } catch (e2) {
+                    console.error(e2);
+                    return res.redirect('/admin/tshirt');
+                }
             }
 
-            res.render('error', {
-                mensaje: 'Error deleting tshirt'
-            });
+            return res.redirect('/admin/tshirt');
         }
     }
 };

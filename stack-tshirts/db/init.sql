@@ -75,9 +75,14 @@ CREATE TABLE `customer_order_line` (
   `product` INT UNSIGNED NOT NULL,
   `sale_price` DECIMAL(8,2) NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`customer_order`) REFERENCES `customer_order`(`id`),
+  FOREIGN KEY (`customer_order`) REFERENCES `customer_order`(`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   FOREIGN KEY (`product`) REFERENCES `tshirt`(`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 
 
