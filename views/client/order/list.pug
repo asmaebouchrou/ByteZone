@@ -1,0 +1,35 @@
+extends ../../layouts/generalLayout.pug
+
+block extraHead
+  link(rel="stylesheet", href="/css/orders.css")
+
+block content
+  .orders-page
+    .orders-header
+      h1 Mis pedidos
+      p Revisa tu historial y el estado de cada compra.
+
+    if orders.length === 0
+      .empty-state
+        p Aún no tienes pedidos.
+        a.btn-primary(href="/tshirt") Explorar camisetas
+    else
+      .orders-table-wrap
+        table.orders-table
+          thead
+            tr
+              th ID
+              th Fecha
+              th Estado
+              th Total
+              th
+          tbody
+            each o in orders
+              - const orderDate = o && o.date && o.date.toLocaleDateString ? o.date.toLocaleDateString() : o?.date
+              tr
+                td ##{o.id}
+                td #{orderDate}
+                td #{o.status}
+                td #{(parseFloat(o.total) || 0).toFixed(2)} €
+                td
+                  a.btn-secondary(href=`/orders/${o.id}`) Ver detalle

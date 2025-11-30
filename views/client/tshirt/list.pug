@@ -1,0 +1,31 @@
+extends ../../layouts/generalLayout.pug
+
+block extraHead
+  link(rel="stylesheet", href="/css/tshirt.css")
+
+block content
+  .tshirt-page
+    .tshirt-header
+      h1 Camisetas
+      p Encuentra tu estilo entre nuestras últimas novedades.
+
+    if !tshirts || tshirts.length === 0
+      .empty-state
+        p No hay camisetas disponibles ahora mismo.
+        a.btn-primary(href="/") Volver al inicio
+    else
+      .tshirt-grid
+        each camiseta in tshirts
+          .tshirt-card
+            a.card-image(href=`/tshirt/${camiseta.id}`)
+              img(src=camiseta.image || "/images/tshirt_example.jpg", alt=camiseta.brand || "Camiseta")
+            .card-body
+              .card-top
+                span.badge #{camiseta.gender || 'Unisex'}
+                span.size #{camiseta.size || 'Talla única'}
+              h3.card-title #{camiseta.brand || 'Camiseta'}
+              - const priceValue = typeof camiseta.price === 'number' ? `${camiseta.price.toFixed(2)} €` : (camiseta.price ? `${camiseta.price} €` : 'Próximamente')
+              p.card-price #{priceValue}
+              .card-actions
+                a.btn-secondary(href=`/tshirt/${camiseta.id}`) Ver detalle
+                a.btn-primary(href=`/cart/add/tshirt/${camiseta.id}`) Añadir

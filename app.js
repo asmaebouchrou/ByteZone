@@ -8,19 +8,26 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 //ROUTERS
-
 const authRoutes = require('./routes/authRouter');
 const profileRoutes = require('./routes/profileRouter')
 const adminRoutes = require('./routes/adminRouter');
+const profileRoutes = require('./routes/profileRouter');
+const tshirtsRoutes = require('./routes/tshirtsRouter');
+const cartRoutes = require('./routes/cart.routes');
+const orderRoutes = require('./routes/order.routes');
+
+
 
 //AUTH MIDDLEWARES
-
 const { isAuthenticated, isAdmin } = require('./middlewares/auth');
 const adminController = require('./controllers/adminController');
 
 //TEMPLATE ENGINE (PUG)
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
+
+// Middleware para servir archivos estáticos (imágenes, css, js si los añades después)
+app.use(express.static(path.join(__dirname, 'public')));
 
 //BODY PARSING
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,7 +36,7 @@ app.use(bodyParser.json());
 //SESSION CONFIG
 app.use(
   session({
-    secret: 'TuVozRegoLaDunaDeMiPecho',
+    secret: 'tshirt-secret',
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -40,37 +47,43 @@ app.use(
   })
 );
 
-//STATIC FILES
-app.use(express.static(path.join(__dirname, 'public')));
-
 //ROUTES
 //Publicas
 app.use('/auth', authRoutes);
 app.use('/profile',isAuthenticated, profileRoutes);
-app.use('/admin/tshirt', adminRoutes);
 
+app.use('/profile', isAuthenticated, profileRoutes);
+app.use('/tshirt', tshirtsRoutes);
 
 // Rutas que hace falta estar loggeado
-// app.use('/cart', isAuthenticated, cartRoutes);
 // app.use('/profile', isAuthenticated, profileRoutes);
 // app.use('/orders', isAuthenticated, orderRoutes);
 
 // Rutas de admin, aqui va el panel de admin
 // app.use('/admin', isAdmin, adminRoutes);
-app.use('/admin/tshirt', adminRoutes);
+app.use('/admin', isAdmin, adminRoutes);
+
+//Ruta para ir al carrito
+//isAuthenticated lo he hecho en el cart.routes,por lo cual no hace falta ponerlo aqui 
+app.use('/', cartRoutes);
+
+//ruta para ir a pedidos
+app.use('/', orderRoutes);
+
 
 // Página principal
 app.get('/', (req, res) => {
-  res.render('auth/login');
+  res.render('client/home'); // Renderiza views/index.pug
 });
 
-
-//404 HANDLER
-app.use((req, res) => {
-  res.status(404).render('404');
+// Ruta principal para renderizar la página principal (index.pug)
+app.get('/index', (req, res) => {
+  res.render('index'); // Renderiza views/index.pug
 });
 
 //SERVER START
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+module.exports = app;

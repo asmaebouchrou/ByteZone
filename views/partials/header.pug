@@ -1,0 +1,39 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title Header
+        link(rel="stylesheet" href="/css/header.css")
+        script(src="/js/header.js")
+
+    body
+        header.header
+            .header-left
+                a(href="/")
+                    img(src="/images/logoNavBar.png" alt="Logo pequeño" class="logo-small")
+
+            nav.header-menu
+                ul
+                    li: a(href="/tshirts/woman") Woman
+                    li: a(href="/tshirts/man") Man
+                    li: a(href="/tshirts/unisex") Unisex
+                    li: a(href="/tshirts/boy") Boy
+                    li: a(href="/tshirts/girl") Girl
+                    li: a(href="/tshirts/unisex_kids") Unisex Kids
+
+            .header-center
+                img(src="/images/logoBueno.png" alt="Main Logo" class="logo-main")
+
+            .header-search
+                input(type="text" placeholder="Search something...")
+                span.search-icon 🔍
+
+            .header-icons
+                a(href="/profile" class="icon-group")
+                    img(src="/images/usrLog.png" alt="Profile" class="icon")
+                    span.label Profile
+
+                a(href="/cart" class="icon-group")
+                    img(src="/images/iconCart.png" alt="Cart" class="icon")
+                    span.label Cart

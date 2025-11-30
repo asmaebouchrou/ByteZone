@@ -1,0 +1,45 @@
+extends ../../layouts/generalLayout.pug
+
+block extraHead
+  link(rel="stylesheet", href="/css/orders.css")
+
+block content
+  - const orderDate = order && order.date && order.date.toLocaleDateString ? order.date.toLocaleDateString() : order?.date
+  .orders-page
+    .orders-header
+      h1 Pedido ##{order.id}
+      p Detalle y estado de tu compra.
+
+    .order-summary
+      .summary-item
+        span.label Fecha
+        span.value #{orderDate}
+      .summary-item
+        span.label Estado
+        span.badge #{order.status}
+      .summary-item.total
+        span.label Total
+        span.amount #{(parseFloat(order.total) || 0).toFixed(2)} €
+
+    .orders-table-wrap
+      table.orders-table
+        thead
+          tr
+            th Producto
+            th Color
+            th Talla
+            th Cantidad
+            th Precio
+            th Subtotal
+        tbody
+          each item in items
+            tr
+              td #{item.brand}
+              td #{item.color}
+              td #{item.size}
+              td #{item.quantity}
+              td #{(parseFloat(item.sale_price) || 0).toFixed(2)} €
+              td #{((parseFloat(item.sale_price) || 0) * (item.quantity || 0)).toFixed(2)} €
+
+    .order-actions
+      a.btn-secondary(href="/orders") Volver a pedidos

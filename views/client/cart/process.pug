@@ -1,0 +1,39 @@
+extends ../../layouts/generalLayout.pug
+
+block extraHead
+  link(rel="stylesheet", href="/css/cart.css")
+
+block content
+  .cart-page
+    .cart-header
+      h1 Confirmar compra
+      p Revisa tu pedido antes de pagar.
+
+    .cart-body
+      table.cart-table
+        thead
+          tr
+            th Producto
+            th Color
+            th Talla
+            th Cantidad
+            th Precio
+            th Subtotal
+        tbody
+          each item in items
+            tr
+              td.item-name= item.brand
+              td= item.color
+              td= item.size
+              td= item.quantity
+              td= item.sale_price.toFixed(2) + " €"
+              td= (item.sale_price * item.quantity).toFixed(2) + " €"
+
+    .cart-summary
+      .summary-line
+        span Total
+        span.total-amount #{cart.total.toFixed(2)} €
+      .summary-actions
+        a.btn-secondary(href="/cart") Volver al carrito
+        form(method="POST")
+          button.btn-primary(type="submit") Confirmar pago

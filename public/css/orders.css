@@ -1,0 +1,178 @@
+:root {
+  --primary: #111111;
+  --accent: #4169e1;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --bg: #f7f8fb;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.orders-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+.orders-header h1 {
+  margin: 0 0 6px;
+  font-size: 28px;
+}
+
+.orders-header p {
+  margin: 0 0 18px;
+  color: var(--muted);
+}
+
+.empty-state {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.orders-table-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.orders-table th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 14px;
+  background: #f9fafb;
+}
+
+.orders-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.order-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.summary-item {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.summary-item .label {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.summary-item .value {
+  font-weight: 700;
+}
+
+.summary-item.total .amount {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.badge {
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.btn-primary,
+.btn-secondary {
+  border: none;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.btn-primary:hover {
+  background: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.16);
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #111;
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.order-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 700px) {
+  .orders-page {
+    padding: 24px 14px 50px;
+  }
+
+  .orders-table {
+    min-width: 580px;
+  }
+
+  .order-actions {
+    flex-direction: column;
+  }
+
+  .btn-secondary,
+  .btn-primary {
+    width: 100%;
+  }
+}

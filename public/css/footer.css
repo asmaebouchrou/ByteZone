@@ -1,0 +1,45 @@
+/* FOOTER GENERAL */
+.footer {
+  background-color: #f8f8f8;
+  padding: 25px 0;
+  border-top: 1px solid #ddd;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.footer-container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.footer p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* LINKS */
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+
+.footer-nav a {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+
+.footer-nav a:hover {
+  color: royalblue;
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .footer-nav {
+    flex-wrap: wrap;
+    gap: 12px 20px;
+  }
+}
