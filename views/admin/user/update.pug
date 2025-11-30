@@ -1,0 +1,37 @@
+extends ../../layouts/generalLayout
+
+block extraHead
+  link(rel="stylesheet", href="/css/admin.css")
+
+block content
+  section.admin-section
+    .section-header
+      h1 Editar usuario
+      a.btn-secondary(href="/admin/user") Volver al listado
+
+    form.admin-form(action='/admin/user/update/' + user.id method='POST')
+      .form-group
+        label(for="username") Nombre de usuario
+        input#username(type="text" name="username" required value=user.username)
+
+      .form-group
+        label(for="email") Email
+        input#email(type="email" name="email" required value=user.email)
+
+      .form-group
+        label(for="role") Rol
+        select#role(name="role" required)
+          option(value="CLIENT" selected=user.role !== 'OPERATOR') Cliente
+          option(value="OPERATOR" selected=user.role === 'OPERATOR') Admin
+
+      .form-group
+        label(for="phone") Teléfono
+        input#phone(type="text" name="phone" placeholder="+34 600 000 000" value=user.phone)
+
+      .form-group
+        label(for="address") Dirección
+        input#address(type="text" name="address" placeholder="Calle, número, ciudad" value=user.address)
+
+      .form-actions
+        a.btn-secondary(href="/admin/user") Cancelar
+        button.btn-primary(type="submit") Guardar cambios

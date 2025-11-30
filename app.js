@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 //ROUTERS
 const authRoutes = require('./routes/authRouter');
 const profileRoutes = require('./routes/profileRouter')
+const adminUserRoutes = require('./routes/adminUserRouter');
 const adminRoutes = require('./routes/adminRouter');
 const tshirtsRoutes = require('./routes/tshirtsRouter');
 const cartRoutes = require('./routes/cart.routes');
@@ -59,6 +60,8 @@ app.use('/tshirt', tshirtsRoutes);
 // app.use('/orders', isAuthenticated, orderRoutes);
 
 // Rutas de admin, aqui va el panel de admin
+// Primero rutas específicas de admin user para no quedar detrás del prefijo /admin
+app.use('/admin/user', isAdmin, adminUserRoutes);
 // app.use('/admin', isAdmin, adminRoutes);
 app.use('/admin', isAdmin, adminRoutes);
 

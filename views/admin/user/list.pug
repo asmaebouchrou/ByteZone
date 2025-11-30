@@ -1,0 +1,39 @@
+extends ../../layouts/generalLayout
+
+block extraHead
+  link(rel="stylesheet", href="/css/admin.css")
+
+block content
+  section.admin-section
+    .section-header
+      h1 Usuarios
+      a.btn-primary(href="/admin/user/add") Añadir usuario
+    p.text-muted Gestiona operadores y clientes registrados.
+
+    if users && users.length
+      table.admin-table
+        thead
+          tr
+            th ID
+            th Usuario
+            th Email
+            th Rol
+            th Teléfono
+            th Dirección
+            th Acciones
+        tbody
+          each user in users
+            tr
+              td= user.id
+              td= user.username
+              td= user.email
+              td= user.role
+              td= user.phone || '-'
+              td= user.address || '-'
+              td.actions
+                a.btn-secondary(href="/admin/user/update/" + user.id) Editar
+                a.btn-danger(href="/admin/user/delete/" + user.id) Eliminar
+    else
+      p No hay usuarios registrados todavía.
+
+    a.btn-secondary(href="/admin") Volver al panel de admin

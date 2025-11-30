@@ -116,13 +116,17 @@ INSERT INTO `user` (`username`, `email`, `phone`, `address`, `role`) VALUES
 ('admin_user', 'admin@tshirtstore.com', '+34123456789', 'Calle Principal 123, Madrid', 'OPERATOR'),
 ('john_doe', 'john.doe@email.com', '+34666111222', 'Avenida Central 45, Barcelona', 'CLIENT'),
 ('sarah_connor', 'sarah.c@email.com', '+34777333444', 'Plaza Mayor 67, Valencia', 'CLIENT'),
-('mike_tyson', 'mike.t@email.com', '+34888555666', 'Calle Secundaria 89, Sevilla', 'CLIENT');
+('mike_tyson', 'mike.t@email.com', '+34888555666', 'Calle Secundaria 89, Sevilla', 'CLIENT'),
+('admin', 'admin@admin.com', NULL, NULL, 'OPERATOR'),
+('user', 'user@user.com', NULL, NULL, 'CLIENT');
 
 INSERT INTO `password` (`user_id`, `password_hash`) VALUES
 (1, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'), 
 (2, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'), 
 (3, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'), 
-(4, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'); 
+(4, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'),
+(5, '$2a$10$6bBu7A28YxZ6ASl6xZLJhOYvztNhAwS3roTQ6Qwpaw5z3dVMwM8T6'),
+(6, '$2a$10$s98BKOtlwGMfjMEUNPWBROwdB8rdhse8sxqh3LLNLlJkbJbF6S1pa'); 
 
 INSERT INTO `tshirt` (`size`, `gender`, `color`, `brand`, `stock`, `price`, `active`, `image`) VALUES
 ('m', 'man', 'Negro', 'Nike', 50, 25.99, TRUE, 'https://shoppinginibiza.com/142715-large_default/nike-camiseta-negra-sportwear-hombre.jpg'),

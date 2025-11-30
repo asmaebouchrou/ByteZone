@@ -1,6 +1,6 @@
 const CartModel = require("../models/CartModel");
 const db = require("../config/database");
-const transporter = require("../config/mailer");
+const emailService = require("../services/emailService");
 
 
 module.exports = {
@@ -211,8 +211,7 @@ processBuy(req, res) {
                         <p>Thank you for shopping at T-Shirt Store!</p>
                     `;
 
-                    transporter.sendMail({
-                        from: '"T-Shirt Store" <noreply@tshirtstore.com>',
+                    emailService.sendMail({
                         to: user.email,
                         subject: `Order Confirmation #${cart.id}`,
                         html

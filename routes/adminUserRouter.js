@@ -1,68 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/database');
-const bcrypt = require('bcryptjs');
+const adminUserController = require('../controllers/adminUserController');
 
 // LISTA DE USUARIOS: GET /admin/user
-router.get('/', async (req, res) => {
-  try {
-    const [rows] = await db.query(
-      'SELECT id, username, email, role, phone, address FROM user'
-    );
-    res.render('admin/user/list', { users: rows });
-  } catch (err) {
-    console.error('Error al listar usuarios:', err);
-    res.status(500).send('Error al cargar la lista de usuarios');
-  }
-});
+router.get('/', adminUserController.listUsers);
 
 // FORMULARIO: GET /admin/user/add
-router.get('/add', (req, res) => {
-  res.render('admin/user/add');
-});
+router.get('/add', adminUserController.renderAddUser);
 
 // CREAR USUARIO: POST /admin/user/add
-router.post('/add', async (req, res) => {
-  try {
-    const { username, email, role, password } = req.body;
+router.post('/add', adminUserController.createUser);
 
-    if (!username || !email || !role || !password) {
-      return res.status(400).send('Faltan campos obligatorios');
-    }
+// EDITAR USUARIO: GET /admin/user/update/:id
+router.get('/update/:id', adminUserController.renderUpdateUser);
 
-    let dbRole;
-    if (role === 'OPERATOR' || role === 'admin' || role === 'ADMIN') {
-      dbRole = 'OPERATOR';
-    } else {
-      dbRole = 'CLIENT';
-    }
+// EDITAR USUARIO: POST /admin/user/update/:id
+router.post('/update/:id', adminUserController.updateUser);
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+// ELIMINAR USUARIO: GET /admin/user/delete/:id
+router.get('/delete/:id', adminUserController.renderDeleteUser);
 
-    const [insertUser] = await db.query(
-      `INSERT INTO user (username, email, role)
-       VALUES (?, ?, ?)`,
-      [username, email, dbRole]
-    );
-
-    const newUserId = insertUser.insertId;
-
-    await db.query(
-      `INSERT INTO password (user_id, password_hash)
-       VALUES (?, ?)`,
-      [newUserId, hashedPassword]
-    );
-
-    return res.redirect('/admin/user');
-  } catch (err) {
-    console.error('Error al crear usuario:', err);
-
-    if (err.code === 'ER_DUP_ENTRY') {
-      return res.status(400).send('El email ya está registrado');
-    }
-
-    return res.status(500).send('Error al crear usuario');
-  }
-});
+// ELIMINAR USUARIO: POST /admin/user/delete/:id
+router.post('/delete/:id', adminUserController.deleteUser);
 
 module.exports = router;

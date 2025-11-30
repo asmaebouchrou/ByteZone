@@ -282,16 +282,13 @@ module.exports = {
         });
       }
 
-      // Hash new password
       const hashed = await bcrypt.hash(newPassword, 10);
 
-      // Update real password
       await db.query(
         `UPDATE password SET password_hash = ? WHERE user_id = ?`,
         [hashed, user_id]
       );
 
-      // Delete reset token so it can’t be reused
       await db.query(`DELETE FROM reset_tokens WHERE token = ?`, [token]);
 
       return res.render('auth/login', {
