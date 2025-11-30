@@ -1,0 +1,35 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Admin List
+    body
+        table
+            thead 
+                tr
+                    th ID
+                    th Marca
+                    th Género
+                    th Precio
+                    th Stock
+                    th
+                    th
+            tbody
+                each camiseta in tshirts
+                    tr 
+                        td= camiseta.id
+                        td= camiseta.brand
+                        td= camiseta.gender
+                        td= camiseta.price
+                        td= camiseta.stock
+                        td
+                            a(href="/admin/tshirt/delete/" + camiseta.id) 
+                                button Delete Tshirt
+                        td  
+                            a(href="/admin/tshirt/update/" + camiseta.id) 
+                                button Edit Tshirt
+                tr
+                    td(colspan="7")
+                        a(href="/admin/tshirt/add") 
+                            button Add Tshirt

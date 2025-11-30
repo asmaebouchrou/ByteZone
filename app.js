@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 3000;
 
 //ROUTERS
 const authRoutes = require('./routes/authRouter');
+const profileRoutes = require('./routes/profileRouter')
+const adminRoutes = require('./routes/adminRouter');
 const profileRoutes = require('./routes/profileRouter');
 const tshirtsRoutes = require('./routes/tshirtsRouter');
 const cartRoutes = require('./routes/cart.routes');
@@ -18,6 +20,7 @@ const orderRoutes = require('./routes/order.routes');
 
 //AUTH MIDDLEWARES
 const { isAuthenticated, isAdmin } = require('./middlewares/auth');
+const adminController = require('./controllers/adminController');
 
 //TEMPLATE ENGINE (PUG)
 app.set('view engine', 'pug');
@@ -47,6 +50,8 @@ app.use(
 //ROUTES
 //Publicas
 app.use('/auth', authRoutes);
+app.use('/profile',isAuthenticated, profileRoutes);
+
 app.use('/profile', isAuthenticated, profileRoutes);
 app.use('/tshirt', tshirtsRoutes);
 
@@ -56,6 +61,7 @@ app.use('/tshirt', tshirtsRoutes);
 
 // Rutas de admin, aqui va el panel de admin
 // app.use('/admin', isAdmin, adminRoutes);
+app.use('/admin', isAdmin, adminRoutes);
 
 //Ruta para ir al carrito
 //isAuthenticated lo he hecho en el cart.routes,por lo cual no hace falta ponerlo aqui 
