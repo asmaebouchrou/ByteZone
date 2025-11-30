@@ -118,16 +118,16 @@ INSERT INTO `password` (`user_id`, `password_hash`) VALUES
 (4, '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'); 
 
 INSERT INTO `tshirt` (`size`, `gender`, `color`, `brand`, `stock`, `price`, `active`, `image`) VALUES
-('m', 'man', 'Negro', 'Nike', 50, 25.99, TRUE, '/public/images/camisetaNegraMujer.jpg'),
-('l', 'woman', 'Blanco', 'Adidas', 30, 22.50, TRUE, 'paco'),
-('xl', 'unisex', 'Azul', 'Puma', 25, 19.99, TRUE, 'paco'),
-('s', 'man', 'Rojo', 'Under Armour', 40, 28.75, TRUE, 'paco'),
-('m', 'woman', 'Verde', 'New Balance', 35, 21.99, TRUE, 'paco'),
-('l', 'unisex', 'Gris', 'Champion', 20, 17.50, TRUE, 'paco'),
-('xl', 'man', 'Negro', 'Nike', 15, 26.99, TRUE, 'paco'),
-('m', 'woman', 'Rosa', 'Adidas', 45, 23.25, TRUE, 'paco'),
-('s', 'unisex_kids', 'Amarillo', 'Puma', 60, 15.99, TRUE, 'paco'),
-('l', 'boy', 'Azul Marino', 'Nike', 25, 18.50, TRUE, 'paco');
+('m', 'man', 'Negro', 'Nike', 50, 25.99, TRUE, 'https://shoppinginibiza.com/142715-large_default/nike-camiseta-negra-sportwear-hombre.jpg'),
+('l', 'woman', 'Blanco', 'Adidas', 30, 22.50, TRUE, 'https://fivesneakershop.com/uploads/photo/image/6407/A03038_52DVr3qc.JPG'),
+('xl', 'unisex', 'Azul', 'Puma', 25, 19.99, TRUE, 'https://static.futbolfactory.es/products/246693_1.jpg'),
+('s', 'man', 'Rojo', 'Under Armour', 40, 28.75, TRUE, 'https://img01.ztat.net/article/spp-media-p1/a36e7af84788318e89094601d15d975d/f80c742847a04fc18df714e5036019c3.jpg?imwidth=762&filter=packshot'),
+('m', 'woman', 'Verde', 'New Balance', 35, 21.99, TRUE, 'https://mobile.yoox.com/images/items/10/10382895XS_14_f.jpg'),
+('l', 'unisex', 'Gris', 'Champion', 20, 17.50, TRUE, 'https://mobile.yoox.com/images/items/10/10196466RA_14_f.jpg?impolicy=crop&width=387&height=490'),
+('xl', 'man', 'Negro', 'Nike', 15, 26.99, TRUE, 'https://shoppinginibiza.com/169741-medium_default/nike-camiseta-negra-dv9750-010-hombre.jpg'),
+('m', 'woman', 'Rosa', 'Adidas', 45, 23.25, TRUE, 'https://fuckingwod.com/wp-content/uploads/2024/05/IC1218.UNICA_.1.jpg'),
+('s', 'unisex_kids', 'Amarillo', 'Puma', 60, 15.99, TRUE, 'https://galeasport.es/4835-large_default/puma-camiseta-logo-yellow.jpg'),
+('l', 'boy', 'Azul Marino', 'Nike', 25, 18.50, TRUE, 'https://img01.ztat.net/article/spp-media-p1/43d1e34cc8b646c38c3f66db77f32573/709c4d18784f4527809b9a81c1338bcc.jpg?imwidth=762&filter=packshot');
 
 
 INSERT INTO `payment_method` (`user_id`, `card_type`, `last_four`, `expiry_month`, `expiry_year`, `is_default`) VALUES
