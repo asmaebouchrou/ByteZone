@@ -1,0 +1,28 @@
+extends ../../layouts/generalLayout
+
+block content
+  section.admin-user-add
+    h1 Añadir usuario
+
+    a(href="/admin/user") Volver a la lista de usuarios
+
+    form(action="/admin/user/add" method="POST")
+      div
+        label(for="username") Nombre de usuario
+        input#username(type="text" name="username" required)
+
+      div
+        label(for="email") Email
+        input#email(type="email" name="email" required)
+
+      div
+        label(for="role") Rol
+        select#role(name="role" required)
+          option(value="CLIENT" selected) Cliente
+          option(value="OPERATOR") Admin
+
+      div
+        label(for="password") Contraseña
+        input#password(type="password" name="password" required)
+
+      button(type="submit") Guardar usuario
