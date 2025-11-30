@@ -1,21 +1,25 @@
 doctype html
 html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title My T-Shirt Store
-        
-    body
-        
-        include ../partials/header.pug
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title My T-Shirt Store
 
-        
-        include ../partials/navBar.pug
+    // CSS GLOBALS
+    link(rel="stylesheet" href="/css/header.css")
+    link(rel="stylesheet" href="/css/navbar.css")
+    link(rel="stylesheet" href="/css/footer.css")
+    link(rel="stylesheet", href="/css/home.css")
+    block extraHead
 
-        
-        main
-            block content
-            
+    // JS (solo si el header lo usa)
+    script(src="/js/header.js")
 
-        
-        include ../partials/footer.pug
+  body
+
+    include ../partials/header.pug
+
+    main
+      block content
+
+    include ../partials/footer.pug

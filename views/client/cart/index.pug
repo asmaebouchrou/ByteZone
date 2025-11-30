@@ -1,48 +1,50 @@
-extends ../../layouts/generalLayout
+extends ../../layouts/generalLayout.pug
+
+block extraHead
+  link(rel="stylesheet", href="/css/cart.css")
 
 block content
-    .cart-container
-        h1 Shopping Cart
+  .cart-page
+    .cart-header
+      h1 Tu carrito
+      p Revisa tus camisetas antes de finalizar la compra.
 
-        if items.length === 0
-            p Your cart is empty.
-            a(href="/tshirt" class="btn btn-primary") View products
-        else
-            table.cart-table
-                thead
-                    tr
-                        th Product
-                        th Color
-                        th Size
-                        th Quantity
-                        th Price
-                        th Subtotal
-                        th Actions
+    if items.length === 0
+      .cart-empty
+        p Tu carrito está vacío por ahora.
+        a.btn-primary(href="/tshirt") Descubrir camisetas
+    else
+      .cart-body
+        table.cart-table
+          thead
+            tr
+              th Producto
+              th Color
+              th Talla
+              th Cantidad
+              th Precio
+              th Subtotal
+              th
+          tbody
+            each item in items
+              tr
+                td.item-name #{item.brand}
+                td #{item.color}
+                td #{item.size}
+                td
+                  .qty-control
+                    a.btn-ghost(href=`/cart/del/tshirt/${item.id}` aria-label="Restar unidad") −
+                    span.qty #{item.quantity}
+                    a.btn-ghost(href=`/cart/add/tshirt/${item.product}` aria-label="Sumar unidad") +
+                td #{item.sale_price.toFixed(2)} €
+                td #{(item.sale_price * item.quantity).toFixed(2)} €
+                td
+                  a.btn-icon(href=`/cart/del/tshirt/${item.id}?full=1` aria-label="Eliminar del carrito") 🗑️
 
-                tbody
-                    each item in items
-                        tr
-                            td #{item.brand}
-                            td #{item.color}
-                            td #{item.size}
-
-                            // Quantity with + and -
-                            td
-                                a.btn-minus(href=`/cart/del/tshirt/${item.id}`) −
-                                span.qty #{item.quantity}
-                                a.btn-plus(href=`/cart/add/tshirt/${item.product}`) +
-
-                            td #{item.sale_price.toFixed(2)} €
-                            td #{(item.sale_price * item.quantity).toFixed(2)} €
-
-                            td
-                                a.btn-delete(href=`/cart/del/tshirt/${item.id}?full=1`) 🗑️
-
-            .cart-total
-                h2 Total: #{cart.total.toFixed(2)} €
-
-            .actions
-                a(
-                    href="/cart/checkout"
-                    class="btn btn-success"
-                ) Checkout
+      .cart-summary
+        .summary-line
+          span Total
+          span.total-amount #{cart.total.toFixed(2)} €
+        .summary-actions
+          a.btn-secondary(href="/tshirt") Seguir comprando
+          a.btn-primary(href="/cart/checkout") Finalizar compra

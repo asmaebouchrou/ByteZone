@@ -1,81 +1,64 @@
-doctype html
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title User Profile — T-Shirt Store
-  body
+extends ../layouts/generalLayout.pug
 
-    header
-      h1 User Profile
-      nav
-        a(href="/auth/logout") Logout
+block extraHead
+  link(rel="stylesheet", href="/css/profile.css")
+
+block content
+  .profile-page
+    .profile-header
+      .profile-heading
+        h1 Tu perfil
+        p Mantén tus datos al día y protege tu cuenta.
+      a.logout-link(href="/auth/logout") Cerrar sesión
 
     if success
-      div(class="success-message")
-        | #{success}
-
+      .alert.alert-success #{success}
     if error
-      div(class="error-message")
-        | #{error}
+      .alert.alert-error #{error}
 
-    main
-      section
-        h2 Personal Information
-        p Here you can view and update your personal information.
+    .profile-grid
+      .profile-card.profile-summary
+        h2 Resumen de cuenta
+        .summary-list
+          .summary-item
+            span.label Nombre
+            span.value #{user.username}
+          .summary-item
+            span.label Correo
+            span.value #{user.email}
+          .summary-item
+            span.label Rol
+            span.value #{user.role}
 
-        .profile-info
-          p 
-            strong Username: 
-            | #{user.username}
-          p 
-            strong Email: 
-            | #{user.email}
-          p 
-            strong Role: 
-            | #{user.role}
-
-      hr
-
-      section
-        h2 Update Profile
-        p Update your phone number, email or address.
-
-        form(action="/profile/update" method="post")
+      .profile-card
+        h2 Actualizar datos
+        p.card-subtitle Edita tu correo, teléfono o dirección.
+        form.profile-form(action="/profile/update" method="post")
           .form-group
-            label(for="phone") Phone
-            input(type="text" name="phone" id="phone" value=user.phone)
-
+            label(for="phone") Teléfono
+            input(type="text" name="phone" id="phone" value=user.phone placeholder="+34 600 000 000" autocomplete="tel")
           .form-group
-            label(for="address") Address
-            input(type="text" name="address" id="address" value=user.address)
-
+            label(for="address") Dirección
+            input(type="text" name="address" id="address" value=user.address placeholder="Calle, número, ciudad" autocomplete="street-address")
           .form-group
-            label(for="email") Email
-            input(type="email" name="email" id="email" value=user.email)  
+            label(for="email") Correo electrónico
+            input(type="email" name="email" id="email" value=user.email placeholder="tu@correo.com" autocomplete="email")
+          button.btn-primary(type="submit") Guardar cambios
 
-          button(type="submit") Save Changes
-
-      hr
-
-      section
-        h2 Security
-        p Change your password for increased account security.
-
-        form(action="/profile/change-password" method="post")
+      .profile-card
+        h2 Seguridad
+        p.card-subtitle Cambia tu contraseña para mantener la cuenta segura.
+        form.profile-form(action="/profile/change-password" method="post")
           .form-group
-            label(for="currentPassword") Current Password
-            input(type="password" name="currentPassword" id="currentPassword" required)
-
+            label(for="currentPassword") Contraseña actual
+            input(type="password" name="currentPassword" id="currentPassword" required autocomplete="current-password")
           .form-group
-            label(for="newPassword") New Password
-            input(type="password" name="newPassword" id="newPassword" required)
-
+            label(for="newPassword") Nueva contraseña
+            input(type="password" name="newPassword" id="newPassword" required autocomplete="new-password")
           .form-group
-            label(for="confirmNewPassword") Confirm New Password
-            input(type="password" name="confirmNewPassword" id="confirmNewPassword" required)
+            label(for="confirmNewPassword") Confirmar nueva contraseña
+            input(type="password" name="confirmNewPassword" id="confirmNewPassword" required autocomplete="new-password")
+          button.btn-primary(type="submit") Actualizar contraseña
 
-          button(type="submit") Change Password
-
-    footer
-      p © 2025 T-Shirt Store
+    .profile-actions
+      a.btn-secondary(href="/orders") Ver mis pedidos

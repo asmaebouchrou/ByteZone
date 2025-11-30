@@ -1,23 +1,46 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Home
-    body 
-    
-        
-        include ../partials/header.pug
+extends ../layouts/generalLayout.pug
 
-        
-        include ../partials/navBar.pug
+block content
+  .home-hero
+    img(src="/images/hero.jpg", alt="Main Banner")
+    .hero-text
+      h1 Discover Your Style
+      p Find the perfect T-Shirt for any moment.
+      a.btn(href="/tshirt") Shop Now
 
-        
-        main
-            
-            a(href="/tshirt") Go to T-Shirts 
+  .home-categories
+    h2 Shop by Category
+    .categories-grid
+      a.category(href="/tshirt")
+        img(src="/images/cat-woman.webp")
+        span Woman
 
-            
+      a.category(href="/tshirt")
+        img(src="/images/cat-man.webp")
+        span Man
 
-        
-        include ../partials/footer.pug
+      a.category(href="/tshirt")
+        img(src="/images/cat-unisex.webp")
+        span Unisex
+
+      a.category(href="/tshirt")
+        img(src="/images/cat-kids.webp")
+        span Kids
+
+  .home-featured
+    h2 Featured Products
+    .products-grid
+      .product
+        img(src="/images/product1.webp")
+        h3 Cool T-Shirt
+        p €19.99
+
+      .product
+        img(src="/images/product2.webp")
+        h3 Premium Tee
+        p €24.99
+
+      .product
+        img(src="/images/product3.webp")
+        h3 Urban Fit
+        p €29.99

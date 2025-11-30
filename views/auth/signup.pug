@@ -1,40 +1,52 @@
 doctype html
-html(lang="en")
+html(lang="es")
   head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Sign Up
+    title Crear cuenta — LíniaWear
+    link(rel="stylesheet", href="/css/auth.css")
   body
-    h1 User Registration
-    if error
-  .alert.alert-danger(role="alert")
-    | #{error}
-    if success
-  .alert.alert-success #{success}
+    main.auth-page
+      .auth-card
+        .auth-logo
+          img(src="/images/logoBueno.png", alt="LíniaWear")
+        h1.auth-title Crea tu cuenta
+        p.auth-subtitle Únete para guardar tus datos y seguir tus pedidos.
 
-    form(action="/auth/signup" method="post" onsubmit="return validatePassword()")
-      input(type="text" name="username" placeholder="Full Name" required)
-      br
-      input(type="email" name="email" placeholder="Email Address" required)
-      br
-      input(type="text" name="address" placeholder="Address" required)
-      br
-      input(type="text" name="phone" placeholder="Phone number" required)
-      br
-      input(type="password" name="password" id="password" placeholder="Password" required minlength="5")
-      br
-      input(type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required minlength="5")
-      br
-      button(type="submit") Create Account
-      br
-      a(href="/auth/login") Already have an account?
+        if error
+          .alert.alert-error #{error}
+        if success
+          .alert.alert-success #{success}
+
+        form.auth-form(action="/auth/signup" method="post" onsubmit="return validatePassword()")
+          .form-group
+            label(for="username") Nombre completo
+            input(type="text" id="username" name="username" placeholder="Nombre y apellidos" required autocomplete="name")
+          .form-group
+            label(for="email") Correo electrónico
+            input(type="email" id="email" name="email" placeholder="tu@correo.com" required autocomplete="email")
+          .form-group
+            label(for="address") Dirección
+            input(type="text" id="address" name="address" placeholder="Calle, número, ciudad" required autocomplete="street-address")
+          .form-group
+            label(for="phone") Teléfono
+            input(type="text" id="phone" name="phone" placeholder="+34 600 000 000" required autocomplete="tel")
+          .form-group
+            label(for="password") Contraseña
+            input(type="password" id="password" name="password" placeholder="Mínimo 5 caracteres" required minlength="5" autocomplete="new-password")
+          .form-group
+            label(for="confirmPassword") Confirmar contraseña
+            input(type="password" id="confirmPassword" name="confirmPassword" placeholder="Repite la contraseña" required minlength="5" autocomplete="new-password")
+          .form-actions
+            a.forgot-link(href="/auth/login") ¿Ya tienes cuenta?
+            button.btn-primary(type="submit") Crear cuenta
 
     script.
       function validatePassword() {
         const password = document.getElementById('password').value;
         const confirm = document.getElementById('confirmPassword').value;
         if (password !== confirm) {
-          alert("Passwords do not match. Please try again.");
+          alert("Las contraseñas no coinciden. Inténtalo de nuevo.");
           return false;
         }
         return true;
