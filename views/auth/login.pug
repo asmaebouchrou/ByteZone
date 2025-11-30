@@ -3,21 +3,32 @@ html(lang="es")
   head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Log in — T-Shirt Store
+    title Inicia sesión — LíniaWear
+    link(rel="stylesheet", href="/css/auth.css")
   body
-    main
-      h1 Log in
+    main.auth-page
+      .auth-card
+        .auth-logo
+          img(src="/images/logoBueno.png", alt="LíniaWear")
+        h1.auth-title Inicia sesión
+        p.auth-subtitle Entra para seguir tu pedido y descubrir nuevas camisetas.
 
-      form(action="/auth/login" method="post")
-        div
-          label(for="email") Email:
-          input(type="email" id="email" name="email" required)
-        div
-          label(for="password") Password:
-          input(type="password" id="password" name="password" required)
-        div
-          a(href="/auth/forgot-password") Forgot your password?
-        div
-          button(type="submit") Log in
+        if error
+          .alert.alert-error #{error}
+        if success
+          .alert.alert-success #{success}
 
-      a(href="/auth/signup") Don't you have an account?
+        form.auth-form(action="/auth/login" method="post")
+          .form-group
+            label(for="email") Correo electrónico
+            input(type="email" id="email" name="email" required autocomplete="email" placeholder="tu@correo.com")
+          .form-group
+            label(for="password") Contraseña
+            input(type="password" id="password" name="password" required autocomplete="current-password" placeholder="••••••••")
+          .form-actions
+            a.forgot-link(href="/auth/forgot-password") ¿Olvidaste tu contraseña?
+            button.btn-primary(type="submit") Entrar
+
+        .auth-footer
+          span ¿No tienes cuenta?
+          a(href="/auth/signup") Crear cuenta

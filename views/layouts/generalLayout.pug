@@ -1,6 +1,6 @@
 doctype html
 html(lang="en")
-    head
+  head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title My T-Shirt Store
@@ -10,18 +10,16 @@ html(lang="en")
     link(rel="stylesheet" href="/css/navbar.css")
     link(rel="stylesheet" href="/css/footer.css")
     link(rel="stylesheet", href="/css/home.css")
-
+    block extraHead
 
     // JS (solo si el header lo usa)
     script(src="/js/header.js")
 
+  body
 
-    body
+    include ../partials/header.pug
 
-        include ../partials/header.pug
+    main
+      block content
 
-
-        main
-            block content
-
-        include ../partials/footer.pug
+    include ../partials/footer.pug

@@ -1,37 +1,21 @@
-doctype html
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Detail Tshirt
-    style.
-      .container {
-        display: flex;
-        align-items: flex-start; /* Alinea la info al inicio verticalmente */
-        gap: 20px; /* Espacio entre imagen e información */
-        padding: 20px;
-        
-      }
-      .container img {
-        max-width: 300px; /* Ajusta el tamaño de la imagen */
-        height: auto;
-        border-radius: 8px;
-      }
-      .info h3, .info h4, .info p, .info button {
-        margin: 10px 0;
-      }
-  body
+extends ../../layouts/generalLayout.pug
+
+block extraHead
+  link(rel="stylesheet", href="/css/tshirt.css")
+
+block content
+  .tshirt-detail
     each camiseta in detalle
-        .container
-            img(src=camiseta.image, alt="")
-            .info
-                h3 Precio
-                h3= camiseta.price
-                br
-                h4 Stock:
-                h4= camiseta.stock
-                br
-                a(href=`/cart/add/tshirt/${camiseta.id}`) 
-                    button ADD TO CART
-                br
-                p Categories: T-Shirts
+      .detail-card
+        .detail-image
+          img(src=camiseta.image || "/images/tshirt_example.jpg", alt=camiseta.brand || "Camiseta")
+        .detail-info
+          h1= camiseta.brand || 'Camiseta'
+          p.detail-meta #{camiseta.gender || 'Unisex'} · #{camiseta.size || 'Talla única'}
+          - const priceValue = typeof camiseta.price === 'number' ? `${camiseta.price.toFixed(2)} €` : (camiseta.price ? `${camiseta.price} €` : 'Próximamente')
+          p.detail-price #{priceValue}
+          p.detail-stock Stock: #{camiseta.stock || '—'}
+          .detail-actions
+            a.btn-primary(href=`/cart/add/tshirt/${camiseta.id}`) Añadir al carrito
+            a.btn-secondary(href="/tshirt") Seguir comprando
+          p.detail-category Categoría: T-Shirts
