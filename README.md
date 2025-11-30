@@ -146,6 +146,54 @@ You can start the DB via Docker or run the SQL initialization script manually.
 
 ---
 
+## Email Confirmation System (How It Works)
+
+The app automatically emails an order confirmation to the customer right after checkout. Follow these steps to enable it locally.
+
+### Configuration Steps
+- Email is sent via **Nodemailer** using the transporter in `config/mailer.js`:
+```js
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS
+    }
+});
+
+module.exports = transporter;
+```
+- Emails are triggered during checkout inside `controllers/cartController.js` → `processBuy()`.
+
+### Gmail App Password Requirement
+To use Gmail:
+- Enable **Two-Step Verification** in your Google Account.
+- Generate an **App Password** at https://myaccount.google.com/apppasswords
+  - App → Mail
+  - Device → Other (e.g. `tshirt-store`)
+- Use the generated password in your `.env`.
+
+### Environment Variables
+complete your .env file with the following keys:
+```bash
+MAIL_USER=your-email@gmail.com
+MAIL_PASS=your-app-password-without-spaces
+```
+
+### Email Contents
+- Customer name
+- Order ID
+- List of purchased items with quantities, sizes and colors
+- Total amount
+- Shipping notification message
+- Sent automatically once checkout completes
+
+<img src="public/images/email-example.jpg" alt="Email de confirmación" width="200">
+
+---
+
 ## Main Endpoints
 
 | Route                | Method      | Description                     | Role     |
@@ -258,6 +306,8 @@ You can start the DB via Docker or run the SQL initialization script manually.
 - After review and tests, `dev` is merged into `main` for releases.
 
 ---
+
+
 
 ## Testing
 
