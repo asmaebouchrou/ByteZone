@@ -1,35 +1,37 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Admin List
-    body
-        table
-            thead 
-                tr
-                    th ID
-                    th Marca
-                    th Género
-                    th Precio
-                    th Stock
-                    th
-                    th
-            tbody
-                each camiseta in tshirts
-                    tr 
-                        td= camiseta.id
-                        td= camiseta.brand
-                        td= camiseta.gender
-                        td= camiseta.price
-                        td= camiseta.stock
-                        td
-                            a(href="/admin/tshirt/delete/" + camiseta.id) 
-                                button Delete Tshirt
-                        td  
-                            a(href="/admin/tshirt/update/" + camiseta.id) 
-                                button Edit Tshirt
-                tr
-                    td(colspan="7")
-                        a(href="/admin/tshirt/add") 
-                            button Add Tshirt
+extends ../../layouts/generalLayout
+
+block extraHead
+  link(rel="stylesheet", href="/css/admin.css")
+
+block content
+  section.admin-section
+    .section-header
+      h1 Gestión de camisetas
+      a.btn-primary(href="/admin/tshirt/add") Añadir camiseta
+    p.text-muted Revisa el inventario y actualiza la información de cada prenda.
+
+    if tshirts && tshirts.length
+      table.admin-table
+        thead 
+          tr
+            th ID
+            th Marca
+            th Género
+            th Precio (€)
+            th Stock
+            th Acciones
+        tbody
+          each camiseta in tshirts
+            tr 
+              td= camiseta.id
+              td= camiseta.brand
+              td= camiseta.gender
+              td= camiseta.price
+              td= camiseta.stock
+              td.actions
+                a.btn-secondary(href="/admin/tshirt/update/" + camiseta.id) Editar
+                a.btn-danger(href="/admin/tshirt/delete/" + camiseta.id) Eliminar
+    else
+      p No hay camisetas registradas todavía.
+
+    a.btn-secondary(href="/admin") Volver al panel de admin

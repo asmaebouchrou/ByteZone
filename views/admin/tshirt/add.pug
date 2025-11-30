@@ -1,17 +1,19 @@
-doctype html
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Add Tshirt
-  body 
-    h2 Add Tshirt
+extends ../../layouts/generalLayout
 
-    form(action="/admin/tshirt/add" method="POST")
+block extraHead
+  link(rel="stylesheet", href="/css/admin.css")
+
+block content
+  section.admin-section
+    .section-header
+      h1 Añadir camiseta
+      a.btn-secondary(href="/admin/tshirt") Volver al listado
+
+    form.admin-form(action="/admin/tshirt/add" method="POST")
       .form-group
-        label(for="size") Size:
+        label(for="size") Talla
         select(name="size" id="size" required)
-          option(value="" disabled selected) Select a size
+          option(value="" disabled selected) Selecciona una talla
           option(value="xxs") XXS
           option(value="xs") XS
           option(value="s") S
@@ -21,40 +23,40 @@ html(lang="en")
           option(value="xxl") XXL
 
       .form-group
-        label(for="gender") Gender:
+        label(for="gender") Género
         select(name="gender" id="gender" required)
-          option(value="" disabled selected) Select a gender
-          option(value="woman") Woman
-          option(value="man") Man
+          option(value="" disabled selected) Selecciona género
+          option(value="woman") Mujer
+          option(value="man") Hombre
           option(value="unisex") Unisex
-          option(value="boy") Boy
-          option(value="girl") Girl
+          option(value="boy") Niño
+          option(value="girl") Niña
           option(value="unisex_kids") Unisex Kids
 
       .form-group
-        label(for="color") Color:
-        input(type="text" name="color" id="color" placeholder="e.g. red" required)
+        label(for="color") Color
+        input(type="text" name="color" id="color" placeholder="ej. rojo" required)
 
       .form-group
-        label(for="brand") Brand:
-        input(type="text" name="brand" id="brand" placeholder="e.g. Nike" required)
+        label(for="brand") Marca
+        input(type="text" name="brand" id="brand" placeholder="ej. Nike" required)
 
       .form-group
-        label(for="stock") Stock:
+        label(for="stock") Stock
         input(type="number" name="stock" id="stock" min="0" value="0" max="1000" required)
 
       .form-group
-        label(for="price") Price (€):
+        label(for="price") Precio (€)
         input(type="number" name="price" id="price" step="0.01" min="0" required)
 
       .form-group
-        label(for="active") Active:
+        label(for="active") Activa
         select(name="active" id="active" required)
-          option(value="1") Yes
+          option(value="1") Sí
           option(value="0") No
 
       .form-group
-        label(for="image") Image URL:
-        input(type="text" name="image" id="image" placeholder="https://example.com/photo.jpg")
+        label(for="image") URL de imagen
+        input(type="text" name="image" id="image" placeholder="https://example.com/foto.jpg")
 
-      button(type="submit") Save T-Shirt
+      button.btn-primary(type="submit") Guardar camiseta

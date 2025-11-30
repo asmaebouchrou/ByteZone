@@ -1,5 +1,9 @@
 const db = require('../config/database');
 module.exports = {
+    showDashboard: (req, res) => {
+        res.render('admin/dashboard');
+    },
+
     showTshirts: async (req, res)=>{
         try {
             let [resultado] = await db.query("SELECT * FROM tshirt");

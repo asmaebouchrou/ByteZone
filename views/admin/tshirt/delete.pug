@@ -1,39 +1,40 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Delete Tshirt
-    body
-        h1 Delete Tshirt
+extends ../../layouts/generalLayout
 
-        p ¿Seguro que deseas eliminar esta camiseta?
+block extraHead
+  link(rel="stylesheet", href="/css/admin.css")
 
-        table
-            tbody
-                tr
-                    th ID
-                    td= tshirt.id
-                tr
-                    th Marca
-                    td= tshirt.brand
-                tr
-                    th Género
-                    td= tshirt.gender
-                tr
-                    th Talla
-                    td= tshirt.size
-                tr
-                    th Color
-                    td= tshirt.color
-                tr
-                    th Precio
-                    td= tshirt.price
-                tr
-                    th Stock
-                    td= tshirt.stock
+block content
+  section.admin-section
+    .section-header
+      h1 Eliminar camiseta
+      a.btn-secondary(href="/admin/tshirt") Volver al listado
 
-        form(action='/admin/tshirt/delete/' + tshirt.id method='POST')
-            button(type="submit") Confirmar eliminación
-            a(href="/admin/tshirt")
-                button(type="button") Cancelar
+    p ¿Seguro que deseas eliminar esta camiseta? Esta acción no se puede deshacer.
+
+    table.admin-table
+      tbody
+        tr
+          th ID
+          td= tshirt.id
+        tr
+          th Marca
+          td= tshirt.brand
+        tr
+          th Género
+          td= tshirt.gender
+        tr
+          th Talla
+          td= tshirt.size
+        tr
+          th Color
+          td= tshirt.color
+        tr
+          th Precio
+          td= tshirt.price
+        tr
+          th Stock
+          td= tshirt.stock
+
+    form.form-actions(action='/admin/tshirt/delete/' + tshirt.id method='POST')
+      button.btn-danger(type="submit") Confirmar eliminación
+      a.btn-secondary(href="/admin/tshirt") Cancelar

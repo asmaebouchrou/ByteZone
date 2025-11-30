@@ -2,22 +2,25 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
 
+// DASHBOARD -> GET /admin
+router.get('/', adminController.showDashboard);
+
 // LISTAR -> GET /admin/tshirt
-router.get('/', adminController.showTshirts);
+router.get('/tshirt', adminController.showTshirts);
 
 // AÑADIR -> GET /admin/tshirt/add
-router.get('/add', adminController.addTshirtGET);
+router.get('/tshirt/add', adminController.addTshirtGET);
 
 // AÑADIR -> POST /admin/tshirt/add
-router.post('/add', adminController.addTshirtPOST);
+router.post('/tshirt/add', adminController.addTshirtPOST);
 
 // EDITAR -> GET /admin/tshirt/update/:id
-router.get('/update/:id', adminController.updateTshirtGET);
+router.get('/tshirt/update/:id', adminController.updateTshirtGET);
 
 // EDITAR -> POST /admin/tshirt/update/:id
-router.post('/update/:id', adminController.updateTshirtPOST);
-router.get('/delete/:id', adminController.deleteTshirtGET);
-router.post('/delete/:id', adminController.deleteTshirtPOST);
+router.post('/tshirt/update/:id', adminController.updateTshirtPOST);
+router.get('/tshirt/delete/:id', adminController.deleteTshirtGET);
+router.post('/tshirt/delete/:id', adminController.deleteTshirtPOST);
 
 
 module.exports = router;

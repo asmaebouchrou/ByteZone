@@ -1,0 +1,20 @@
+extends ../layouts/generalLayout
+
+block extraHead
+  link(rel="stylesheet", href="/css/admin.css")
+
+block content
+  .admin-dashboard
+    h1 Panel de administración
+    p Administra inventario y equipo desde un solo lugar.
+
+    .admin-dashboard__grid
+      .admin-card
+        h2 Camisetas
+        p Revisa el catálogo, edita o elimina camisetas.
+        a.btn-primary(href="/admin/tshirt") Ir a camisetas
+
+      .admin-card
+        h2 Usuarios
+        p Gestiona operadores y clientes registrados.
+        a.btn-secondary(href="/admin/user") Ir a usuarios

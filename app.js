@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 3000;
 const authRoutes = require('./routes/authRouter');
 const profileRoutes = require('./routes/profileRouter')
 const adminRoutes = require('./routes/adminRouter');
-const profileRoutes = require('./routes/profileRouter');
 const tshirtsRoutes = require('./routes/tshirtsRouter');
 const cartRoutes = require('./routes/cart.routes');
 const orderRoutes = require('./routes/order.routes');

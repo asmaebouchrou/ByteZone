@@ -15,7 +15,7 @@ module.exports.isAdmin = (req, res, next) => {
     return res.redirect('/auth/login');
   }
 
-  if (req.session.user.role !== 'admin') {
+  if (req.session.user.role !== 'OPERATOR') {
     console.log("User is not admin");
     return res.status(403).send("Forbidden");
   }

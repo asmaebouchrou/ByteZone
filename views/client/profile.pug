@@ -61,4 +61,6 @@ block content
           button.btn-primary(type="submit") Actualizar contraseña
 
     .profile-actions
+      if user && user.role === 'OPERATOR'
+        a.btn-primary(href="/admin") Ir al panel de operador
       a.btn-secondary(href="/orders") Ver mis pedidos
