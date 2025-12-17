@@ -12,6 +12,7 @@
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
 
 A web app for a T-shirt store built with Node.js, Express, Pug, and MySQL. This is a small collaborative class project we created to practice teamwork and delivery discipline.
+This project was developed for educational purposes, as a regular class assignment, focused on applying backend development fundamentals, database integration, middleware usage, and collaborative workflows.
 
 ## How we worked
 - **Branches**: simple flow with `dev` + `feature/*` / `fix/*`; merge into `dev`, then into `main` after review.
@@ -83,6 +84,17 @@ The database seeds from `stack-tshirts/db/init.sql` when the container starts.
 
 Use them to validate admin screens, checkout, and auth flows.
 
+## Middleware
+This project includes a dedicated **middleware layer** that intercepts incoming HTTP requests before they reach the controllers.
+
+Its main responsibilities are:
+- Validating that a user session exists.
+- Enforcing **role-based access control** (CLIENT / OPERATOR).
+- Protecting sensitive routes such as admin panels and restricted actions.
+
+By centralizing these checks in middleware, the application ensures consistent security rules, cleaner controllers, and easier maintenance.
+
+
 ## Highlights
 - Session-based auth with roles (CLIENT / OPERATOR).
 - Admin panel: manage T-shirts and users, with dashboard navigation.
@@ -112,6 +124,29 @@ reset_tokens (user_id, token, expires_at)
 
 ## Mailing approach
 We consolidated on a single email service (`services/emailService.js`) to keep credentials and transport config in one place. It cut duplicate SMTP configs, removed inconsistencies between auth and checkout flows, and simplifies rotating keys or swapping providers later.
+
+## Request Flow and Architecture
+
+Since the application is built with **Node.js and Express**, each feature follows a clear and structured flow:
+
+1. **Router**
+   - Defines the application routes and the HTTP methods (`GET`, `POST`, etc.).
+   - Connects each route to the appropriate middleware and controller.
+
+2. **Middleware**
+   - Intercepts incoming requests before they reach the controller.
+   - Handles cross-cutting concerns such as authentication, authorization, and session validation.
+
+3. **Controller**
+   - Contains the business logic for each route.
+   - Processes the request, interacts with services or the database, and prepares the response data.
+
+4. **View (Pug)**
+   - Renders the final HTML sent to the client.
+   - Receives data from the controller and displays it to the user.
+
+This separation of responsibilities improves code readability, maintainability, and scalability, and reflects a simplified **MVC-based architecture** commonly used in Node.js applications.
+
 
 ## Structure
 ```
