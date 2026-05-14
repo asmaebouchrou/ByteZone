@@ -7,12 +7,12 @@ const { isAuthenticated } = require("../middlewares/auth");
 router.get("/cart", isAuthenticated, cartController.viewCart);
 
 // Add item
-router.get("/cart/add/tshirt/:id", isAuthenticated, cartController.addItem);
-router.post("/cart/add/tshirt/:id", isAuthenticated, cartController.addItem);
+router.get("/cart/add/product/:id", isAuthenticated, cartController.addItem);
+router.post("/cart/add/product/:id", isAuthenticated, cartController.addItem);
 
 // Remove item
-router.get("/cart/del/tshirt/:id", isAuthenticated, cartController.removeItem);
-router.post("/cart/del/tshirt/:id", isAuthenticated, cartController.removeItem);
+router.get("/cart/del/product/:id", isAuthenticated, cartController.removeItem);
+router.post("/cart/del/product/:id", isAuthenticated, cartController.removeItem);
 
 // Checkout
 router.get("/cart/checkout", isAuthenticated, cartController.processView);

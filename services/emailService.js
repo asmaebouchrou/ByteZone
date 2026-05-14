@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 module.exports = {
   sendMail: (options) => {
     return transporter.sendMail({
-      from: `"T-Shirt Store" <${process.env.MAIL_USER}>`,
+      from: `"ByteZone" <${process.env.MAIL_USER}>`,
       ...options
     });
   }

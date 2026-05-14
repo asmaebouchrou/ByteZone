@@ -1,39 +1,22 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
-        title Header
-        link(rel="stylesheet" href="/css/header.css")
-        script(src="/js/header.js")
+header.header
+    .header-left
+        a.logo-home(href="/" aria-label="Ir al inicio")
+            img(src="/images/logoBueno.png" alt="ByteZone" class="logo-main")
 
-    body
-        header.header
-            .header-left
-                a(href="/")
-                    img(src="/images/logoNavBar.png" alt="Logo pequeño" class="logo-small")
+    nav.header-menu
+        ul
+            li: a(href="/products?category=ram") RAM
+            li: a(href="/products?category=ssd") SSD
+            li: a(href="/products?category=processor") Procesadores
+            li: a(href="/products?category=graphics_card") Gráficas
+            li: a(href="/products?category=peripherals") Periféricos
+            li: a(href="/products?category=accessory") Accesorios
 
-            nav.header-menu
-                ul
-                    li: a(href="/tshirt") Woman
-                    li: a(href="/tshirt") Man
-                    li: a(href="/tshirt") Unisex
-                    li: a(href="/tshirt") Boy
-                    li: a(href="/tshirt") Girl
-                    li: a(href="/tshirt") Unisex Kids
+    .header-icons
+        a(href="/profile" class="icon-group")
+            img(src="/images/usrLog.png" alt="Profile" class="icon")
+            span.label Perfil
 
-            .header-center
-                img(src="/images/logoBueno.png" alt="Main Logo" class="logo-main")
-
-            .header-search
-                input(type="text" placeholder="Search something...")
-                span.search-icon 🔍
-
-            .header-icons
-                a(href="/profile" class="icon-group")
-                    img(src="/images/usrLog.png" alt="Profile" class="icon")
-                    span.label Profile
-
-                a(href="/cart" class="icon-group")
-                    img(src="/images/iconCart.png" alt="Cart" class="icon")
-                    span.label Cart
+        a(href="/cart" class="icon-group")
+            img(src="/images/iconCart.png" alt="Cart" class="icon")
+            span.label Carrito

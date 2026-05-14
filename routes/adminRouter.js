@@ -5,22 +5,17 @@ const adminController = require('../controllers/adminController');
 // DASHBOARD -> GET /admin
 router.get('/', adminController.showDashboard);
 
-// LISTAR -> GET /admin/tshirt
-router.get('/tshirt', adminController.showTshirts);
+router.get('/products', adminController.showProducts);
 
-// AÑADIR -> GET /admin/tshirt/add
-router.get('/tshirt/add', adminController.addTshirtGET);
+router.get('/products/add', adminController.addProductGET);
 
-// AÑADIR -> POST /admin/tshirt/add
-router.post('/tshirt/add', adminController.addTshirtPOST);
+router.post('/products/add', adminController.addProductPOST);
 
-// EDITAR -> GET /admin/tshirt/update/:id
-router.get('/tshirt/update/:id', adminController.updateTshirtGET);
+router.get('/products/update/:id', adminController.updateProductGET);
 
-// EDITAR -> POST /admin/tshirt/update/:id
-router.post('/tshirt/update/:id', adminController.updateTshirtPOST);
-router.get('/tshirt/delete/:id', adminController.deleteTshirtGET);
-router.post('/tshirt/delete/:id', adminController.deleteTshirtPOST);
+router.post('/products/update/:id', adminController.updateProductPOST);
+router.get('/products/delete/:id', adminController.deleteProductGET);
+router.post('/products/delete/:id', adminController.deleteProductPOST);
 
 
 module.exports = router;

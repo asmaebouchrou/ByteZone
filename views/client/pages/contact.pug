@@ -1,0 +1,24 @@
+extends ../../layouts/generalLayout.pug
+
+block extraHead
+  link(rel="stylesheet", href="/css/pages.css")
+
+block content
+  .info-page
+    .info-header
+      h1 Contacto
+      p Estamos disponibles para dudas sobre compatibilidad, pedidos y disponibilidad de productos.
+
+    .info-grid
+      .info-card
+        h2 Datos de contacto
+        ul.contact-list
+          li Email: soporte@bytezone.com
+          li Teléfono: +34 900 123 456
+          li Horario: lunes a viernes, 9:00 - 18:00
+      .info-card
+        h2 Tienda y soporte
+        p Para consultas de compatibilidad, incluye tu procesador, placa base, caja o fuente actual. Así podremos revisar mejor RAM, SSD, gráficas y refrigeración.
+      .info-card
+        h2 Pedidos
+        p Si ya has comprado, entra en tu perfil para revisar el estado del pedido o contacta indicando el número de pedido.

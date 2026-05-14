@@ -1,0 +1,47 @@
+extends ../../layouts/generalLayout.pug
+
+block extraHead
+  link(rel="stylesheet", href="/css/products.css")
+
+block content
+  .products-page
+    .products-header
+      h1 Componentes y periféricos
+      if search || selectedCategory
+        p Resultados para #{search || categoryLabel}.
+      else
+        p Equipa tu setup con hardware, almacenamiento, memoria y accesorios.
+
+    .product-filters
+      a.filter-pill(href="/products" class=!selectedCategory ? "active" : "") Todo
+      a.filter-pill(href="/products?category=ram" class=selectedCategory === "ram" ? "active" : "") RAM
+      a.filter-pill(href="/products?category=ssd" class=selectedCategory === "ssd" ? "active" : "") SSD
+      a.filter-pill(href="/products?category=processor" class=selectedCategory === "processor" ? "active" : "") Procesadores
+      a.filter-pill(href="/products?category=graphics_card" class=selectedCategory === "graphics_card" ? "active" : "") Gráficas
+      a.filter-pill(href="/products?category=motherboard" class=selectedCategory === "motherboard" ? "active" : "") Placas
+      a.filter-pill(href="/products?category=power_supply" class=selectedCategory === "power_supply" ? "active" : "") Fuentes
+      a.filter-pill(href="/products?category=case" class=selectedCategory === "case" ? "active" : "") Cajas
+      a.filter-pill(href="/products?category=cooling" class=selectedCategory === "cooling" ? "active" : "") Refrigeración
+      a.filter-pill(href="/products?category=peripherals" class=selectedCategory === "peripherals" ? "active" : "") Periféricos
+      a.filter-pill(href="/products?category=accessory" class=selectedCategory === "accessory" ? "active" : "") Accesorios
+
+    if !products || products.length === 0
+      .empty-state
+        p No hay productos que coincidan con tu búsqueda.
+        a.btn-primary(href="/products") Ver catálogo completo
+    else
+      .products-grid
+        each product in products
+          .product-card
+            a.card-image(href=`/products/${product.id}`)
+              img(src=product.image || "/images/product1.webp", alt=product.brand || "Producto informático")
+            .card-body
+              .card-top
+                span.badge #{product.categoryLabel || 'Hardware'}
+                span.specs #{product.specs || 'Especificaciones'}
+              h3.card-title #{product.brand || 'Producto'}
+              - const priceValue = typeof product.price === 'number' ? `${product.price.toFixed(2)} €` : (product.price ? `${product.price} €` : 'Próximamente')
+              p.card-price #{priceValue}
+              .card-actions
+                a.btn-secondary(href=`/products/${product.id}`) Ver detalle
+                a.btn-primary(href=`/cart/add/product/${product.id}`) Añadir

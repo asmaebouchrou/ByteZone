@@ -9,11 +9,11 @@ module.exports = {
                 col.id,
                 col.quantity,
                 col.sale_price,
-                tshirt.brand,
-                tshirt.color,
-                tshirt.size
+                product.brand,
+                product.category,
+                product.specs
             FROM customer_order_line col
-            JOIN tshirt ON tshirt.id = col.product
+            JOIN product ON product.id = col.product
             WHERE col.customer_order = ?
         `;
 

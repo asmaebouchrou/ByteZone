@@ -2,45 +2,45 @@ extends ../layouts/generalLayout.pug
 
 block content
   .home-hero
-    img(src="/images/hero.jpg", alt="Main Banner")
+    img(src="https://i.pinimg.com/736x/39/2c/6e/392c6ec257f2621100cbe277625daa75.jpg", alt="Setup informático")
     .hero-text
-      h1 Discover Your Style
-      p Find the perfect T-Shirt for any moment.
-      a.btn(href="/tshirt") Shop Now
+      h1 ByteZone
+      p Componentes, almacenamiento y periféricos para montar tu próximo PC.
+      a.btn(href="/products") Comprar ahora
 
   .home-categories
-    h2 Shop by Category
+    h2 Comprar por categoría
     .categories-grid
-      a.category(href="/tshirt")
-        img(src="/images/cat-woman.webp")
-        span Woman
+      a.category(href="/products?category=processor")
+        img(src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=900&q=80", alt="Procesadores")
+        span Procesadores
 
-      a.category(href="/tshirt")
-        img(src="/images/cat-man.webp")
-        span Man
+      a.category(href="/products?category=ssd")
+        img(src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=900&q=80", alt="SSD")
+        span SSD
 
-      a.category(href="/tshirt")
-        img(src="/images/cat-unisex.webp")
-        span Unisex
+      a.category(href="/products?category=peripherals")
+        img(src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=80", alt="Teclados")
+        span Periféricos
 
-      a.category(href="/tshirt")
-        img(src="/images/cat-kids.webp")
-        span Kids
+      a.category(href="/products?category=graphics_card")
+        img(src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=900&q=80", alt="Componentes")
+        span Componentes
 
   .home-featured
-    h2 Featured Products
+    h2 Productos destacados
     .products-grid
       .product
-        img(src="/images/product1.webp")
-        h3 Cool T-Shirt
-        p €19.99
+        img(src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=900&q=80", alt="Memoria RAM")
+        h3 RAM DDR5 32GB
+        p 129.99 €
 
       .product
-        img(src="/images/product2.webp")
-        h3 Premium Tee
-        p €24.99
+        img(src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=900&q=80", alt="SSD NVMe")
+        h3 SSD NVMe 2TB
+        p 149.90 €
 
       .product
-        img(src="/images/product3.webp")
-        h3 Urban Fit
-        p €29.99
+        img(src="https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=900&q=80", alt="Ratón gaming")
+        h3 Ratón inalámbrico
+        p 79.99 €

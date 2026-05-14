@@ -49,7 +49,7 @@ module.exports = {
         email: user.email,
         phone: user.phone,
         address: user.address,
-        role: user.role || 'client'
+        role: user.role || 'CLIENT'
       };
 
       console.log(`User ${user.username} logged in`);
@@ -60,7 +60,7 @@ module.exports = {
           res.redirect('/profile');
         }*/
 
-      if (user.role === 'admin') {
+      if (user.role === 'OPERATOR') {
         return res.redirect('/admin');
       }
       let redirectTo = req.session.redirectTo || '/profile';
@@ -113,7 +113,7 @@ module.exports = {
 
       const [insertUser] = await db.query(
         `INSERT INTO user (username, email, phone, address, role)
-       VALUES (?, ?, ?, ?, 'client')`,
+       VALUES (?, ?, ?, ?, 'CLIENT')`,
         [username, email, phone, address]
       );
 
@@ -128,7 +128,7 @@ module.exports = {
       req.session.user = {
         id: newUserId,
         username,
-        role: 'client'
+        role: 'CLIENT'
       };
       req.session.flash = { success: 'Account created successfully!' };
       return res.redirect('/auth/login'); //CAMBIAR POR /home
@@ -182,7 +182,7 @@ module.exports = {
 
       await emailService.sendMail({
         to: email,
-        subject: "Reset your T-Shirt Store password",
+        subject: "Reset your ByteZone password",
         html: `
                 <h2>Password Reset Request</h2>
                 <p>You requested to reset your password.</p>

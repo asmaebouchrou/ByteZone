@@ -30,11 +30,11 @@ module.exports = {
             col.product,
             col.quantity,
             col.sale_price,
-            tshirt.size,
-            tshirt.color,
-            tshirt.brand
+            product.category,
+            product.specs,
+            product.brand
         FROM customer_order_line col
-        JOIN tshirt ON tshirt.id = col.product
+        JOIN product ON product.id = col.product
         WHERE col.customer_order = ?
 `;
         return db.query(sql, [cartId]);

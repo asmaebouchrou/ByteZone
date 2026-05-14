@@ -7,20 +7,20 @@ block content
   .cart-page
     .cart-header
       h1 Tu carrito
-      p Revisa tus camisetas antes de finalizar la compra.
+      p Revisa tus componentes antes de finalizar la compra.
 
     if items.length === 0
       .cart-empty
         p Tu carrito está vacío por ahora.
-        a.btn-primary(href="/tshirt") Descubrir camisetas
+        a.btn-primary(href="/products") Descubrir productos
     else
       .cart-body
         table.cart-table
           thead
             tr
               th Producto
-              th Color
-              th Talla
+              th Categoría
+              th Especificaciones
               th Cantidad
               th Precio
               th Subtotal
@@ -29,22 +29,22 @@ block content
             each item in items
               tr
                 td.item-name #{item.brand}
-                td #{item.color}
-                td #{item.size}
+                td #{item.category}
+                td #{item.specs}
                 td
                   .qty-control
-                    a.btn-ghost(href=`/cart/del/tshirt/${item.id}` aria-label="Restar unidad") −
+                    a.btn-ghost(href=`/cart/del/product/${item.id}` aria-label="Restar unidad") −
                     span.qty #{item.quantity}
-                    a.btn-ghost(href=`/cart/add/tshirt/${item.product}` aria-label="Sumar unidad") +
+                    a.btn-ghost(href=`/cart/add/product/${item.product}` aria-label="Sumar unidad") +
                 td #{item.sale_price.toFixed(2)} €
                 td #{(item.sale_price * item.quantity).toFixed(2)} €
                 td
-                  a.btn-icon(href=`/cart/del/tshirt/${item.id}?full=1` aria-label="Eliminar del carrito") 🗑️
+                  a.btn-icon(href=`/cart/del/product/${item.id}?full=1` aria-label="Eliminar del carrito") 🗑️
 
       .cart-summary
         .summary-line
           span Total
           span.total-amount #{cart.total.toFixed(2)} €
         .summary-actions
-          a.btn-secondary(href="/tshirt") Seguir comprando
+          a.btn-secondary(href="/products") Seguir comprando
           a.btn-primary(href="/cart/checkout") Finalizar compra

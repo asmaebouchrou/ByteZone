@@ -1,4 +1,4 @@
-# T-Shirt Store (NEPM Stack)
+# ByteZone PC Store (NEPM Stack)
 
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
 ![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
@@ -11,7 +11,7 @@
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
 
-A web app for a T-shirt store built with Node.js, Express, Pug, and MySQL. This is a small collaborative class project we created to practice teamwork and delivery discipline.
+A web app for a PC components store built with Node.js, Express, Pug, and MySQL. The catalog focuses on RAM, SSDs, processors, graphics cards, cases, cooling, power supplies and peripherals.
 This project was developed for educational purposes, as a regular class assignment, focused on applying backend development fundamentals, database integration, middleware usage, and collaborative workflows.
 
 ## How we worked
@@ -26,20 +26,20 @@ This project was developed for educational purposes, as a regular class assignme
 - Docker & Docker Compose (for the database)
 
 ## Environment setup
-The backend reads variables from `stack-tshirts/.env`. Start from the example and adjust:
+The backend reads variables from `stack-bytezone/.env`. Start from the example and adjust:
 
 ```bash
-cp stack-tshirts/.env.example stack-tshirts/.env
+cp stack-bytezone/.env.example stack-bytezone/.env
 ```
 
-Minimum values that must be set in `stack-tshirts/.env`:
+Minimum values that must be set in `stack-bytezone/.env`:
 ```bash
 PORT=3000                 # app port
 MYSQL_HOST=localhost
 MYSQL_HOST_PORT=3306      # host port for MySQL
 MYSQL_USERNAME=root
 MYSQL_ROOT_PASSWORD=change_this_secure_password
-MYSQL_DATABASE=tshirts    # matches init.sql
+MYSQL_DATABASE=bytezone   # matches init.sql
 
 # Docker port mappings (tweak if needed)
 MYSQL_CONTAINER_PORT=3306
@@ -56,17 +56,17 @@ For Gmail, use an app password (2FA enabled). Email is used for password reset a
 ### How to get a Gmail App Password
 1) Enable 2-Step Verification on your Google account.  
 2) Go to https://myaccount.google.com/apppasswords  
-3) Choose app: Mail; device: Other (e.g. `tshirt-store`) and generate.  
+3) Choose app: Mail; device: Other (e.g. `bytezone-store`) and generate.  
 4) Copy the 16-character password and set `MAIL_PASS` to that value.
 
 ## Run the project
 ```bash
-git clone https://github.com/ADelgadoMontoro/tshirt-store-nepm-stack.git
-cd Camisetas
+git clone https://github.com/ADelgadoMontoro/bytezone-pc-store.git
+cd ByteZone
 npm install
 
 # Start MySQL + Adminer with seed data
-cd stack-tshirts
+cd stack-bytezone
 docker-compose up -d
 cd ..
 
@@ -76,7 +76,7 @@ npm start
 npm run dev
 ```
 
-The database seeds from `stack-tshirts/db/init.sql` when the container starts.
+The database seeds from `stack-bytezone/db/init.sql` when the container starts.
 
 ## Test accounts
 - Admin: `admin@admin.com` / `admin` (role OPERATOR)
@@ -97,7 +97,7 @@ By centralizing these checks in middleware, the application ensures consistent s
 
 ## Highlights
 - Session-based auth with roles (CLIENT / OPERATOR).
-- Admin panel: manage T-shirts and users, with dashboard navigation.
+- Admin panel: manage products and users, with dashboard navigation.
 - Public catalog and product detail.
 - Cart with totals and stock updates; order confirmation email on payment.
 - Password recovery via email token.
@@ -114,7 +114,7 @@ By centralizing these checks in middleware, the application ensures consistent s
 ```
 user (id, username, email, phone, address, active, role, created_at, updated_at)
 password (id, user_id, password_hash, created_at, is_active)
-tshirt (id, size, gender, color, brand, stock, price, active, image)
+product (id, category, specs, brand, stock, price, active, image)
 customer_order (id, date, status, client, total)
 customer_order_line (id, customer_order, product, sale_price, quantity)
 payment_method (id, user_id, card_type, last_four, expiry_month, expiry_year, is_default, token)
@@ -157,10 +157,10 @@ routes/         # Express routers
 services/       # Email, etc.
 views/          # Pug templates (layouts, partials, admin/client views)
 public/         # Static assets (CSS/JS)
-stack-tshirts/  # MySQL infra + seed + .env
+stack-bytezone/  # MySQL infra + seed + .env
 ```
 
 ## Notes
 - All admin routes are protected with `isAdmin`.
-- Header category links go to the T-shirt list at `/tshirt`.
+- Header category links go to the product list at `/products`.
 - If you change ports or creds in `.env`, keep them in sync with `config/database.js`.

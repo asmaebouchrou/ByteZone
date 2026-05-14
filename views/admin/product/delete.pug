@@ -1,0 +1,37 @@
+extends ../../layouts/generalLayout
+
+block extraHead
+  link(rel="stylesheet", href="/css/admin.css")
+
+block content
+  section.admin-section
+    .section-header
+      h1 Eliminar producto
+      a.btn-secondary(href="/admin/products") Volver al listado
+
+    p ¿Seguro que deseas eliminar este producto? Esta acción no se puede deshacer.
+
+    table.admin-table
+      tbody
+        tr
+          th ID
+          td= product.id
+        tr
+          th Marca
+          td= product.brand
+        tr
+          th Categoría
+          td= product.category
+        tr
+          th Especificaciones
+          td= product.specs
+        tr
+          th Precio
+          td= product.price
+        tr
+          th Stock
+          td= product.stock
+
+    form.form-actions(action='/admin/products/delete/' + product.id method='POST')
+      button.btn-danger(type="submit") Confirmar eliminación
+      a.btn-secondary(href="/admin/products") Cancelar

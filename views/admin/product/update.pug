@@ -1,0 +1,70 @@
+extends ../../layouts/generalLayout
+
+block extraHead
+  link(rel="stylesheet", href="/css/admin.css")
+
+block content
+  section.admin-section
+    .section-header
+      h1 Editar producto
+      a.btn-secondary(href="/admin/products") Volver al listado
+
+    form.admin-form(action='/admin/products/update/' + product.id method='POST')
+      table.admin-table
+        tbody
+          tr
+            th ID
+            td= product.id
+          tr
+            th Marca
+            td= product.brand
+          tr
+            th Categoría
+            td
+              select(name="category" required)
+                option(value="ram" selected=product.category === "ram") RAM
+                option(value="ssd" selected=product.category === "ssd") SSD
+                option(value="processor" selected=product.category === "processor") Procesador
+                option(value="graphics_card" selected=product.category === "graphics_card") Tarjeta gráfica
+                option(value="motherboard" selected=product.category === "motherboard") Placa base
+                option(value="power_supply" selected=product.category === "power_supply") Fuente de alimentación
+                option(value="case" selected=product.category === "case") Caja
+                option(value="cooling" selected=product.category === "cooling") Refrigeración
+                option(value="monitor" selected=product.category === "monitor") Monitor
+                option(value="keyboard" selected=product.category === "keyboard") Teclado
+                option(value="mouse" selected=product.category === "mouse") Ratón
+                option(value="headset" selected=product.category === "headset") Auriculares
+                option(value="accessory" selected=product.category === "accessory") Accesorio
+          tr
+            th Especificaciones
+            td
+              input(
+                type="text"
+                name="specs"
+                value=product.specs
+                required
+              )
+          tr
+            th Precio
+            td
+              input(
+                type="number"
+                name="price"
+                step="0.01"
+                min="0"
+                value=product.price
+                required
+              )
+          tr
+            th Stock
+            td
+              input(
+                type="number"
+                name="stock"
+                min="0"
+                value=product.stock
+                required
+              )
+      .form-actions
+        a.btn-secondary(href="/admin/products") Cancelar
+        button.btn-primary(type="submit") Guardar cambios

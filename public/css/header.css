@@ -3,72 +3,76 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 20px;
+  gap: 18px;
+  padding: 12px clamp(16px, 3vw, 42px);
   border-bottom: 1px solid #ddd;
   background: white;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
 }
 
-/* LEFT LOGO */
-.logo-small {
-  height: 40px;
+
+.logo-home:hover {
+  background: #f3f3f3;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
 }
 
-/* MAIN BIG LOGO */
 .logo-main {
-  height: 70px;
+  height: 58px;
+  display: block;
 }
 
 /* MENU */
 .header-menu ul {
   display: flex;
-  gap: 20px;
+  align-items: center;
+  gap: 6px;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .header-menu a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 10px;
+  border-radius: 999px;
   text-decoration: none;
   font-weight: bold;
   color: #333;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .header-menu a:hover {
-  color: gray;
-}
-
-/* SEARCH BAR */
-.header-search {
-  display: flex;
-  align-items: center;
+  color: #333;
   background: #f3f3f3;
-  padding: 6px 10px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-}
-
-.header-search input {
-  border: none;
-  background: transparent;
-  outline: none;
-}
-
-.search-icon {
-  margin-left: 5px;
-  font-size: 14px;
-  opacity: 0.6;
 }
 
 /* ICONS RIGHT */
 .header-icons {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 10px;
 }
 
 .icon-group {
+  min-width: 58px;
+  padding: 6px 8px;
+  border-radius: 12px;
   text-align: center;
   text-decoration: none;
   color: #333;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.icon-group:hover {
+  background: #f3f3f3;
+  transform: translateY(-1px);
 }
 
 .icon-group .icon {
@@ -79,4 +83,31 @@
   display: block;
   margin-top: 2px;
   font-size: 12px;
+}
+
+@media (max-width: 1100px) {
+  .header {
+    flex-wrap: wrap;
+  }
+
+  .header-menu {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .header-menu ul {
+    width: max-content;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    gap: 10px;
+  }
+
+  .logo-main {
+    height: 48px;
+  }
 }

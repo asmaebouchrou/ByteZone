@@ -1,0 +1,39 @@
+extends ../../layouts/generalLayout
+
+block extraHead
+  link(rel="stylesheet", href="/css/admin.css")
+
+block content
+  section.admin-section
+    .section-header
+      h1 Gestión de productos
+      a.btn-primary(href="/admin/products/add") Añadir producto
+    p.text-muted Revisa el inventario y actualiza la información de cada componente.
+
+    if products && products.length
+      table.admin-table
+        thead 
+          tr
+            th ID
+            th Marca
+            th Categoría
+            th Especificaciones
+            th Precio (€)
+            th Stock
+            th Acciones
+        tbody
+          each product in products
+            tr 
+              td= product.id
+              td= product.brand
+              td= product.category
+              td= product.specs
+              td= product.price
+              td= product.stock
+              td.actions
+                a.btn-secondary(href="/admin/products/update/" + product.id) Editar
+                a.btn-danger(href="/admin/products/delete/" + product.id) Eliminar
+    else
+      p No hay productos registrados todavía.
+
+    a.btn-secondary(href="/admin") Volver al panel de admin

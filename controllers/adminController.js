@@ -4,82 +4,67 @@ module.exports = {
         res.render('admin/dashboard');
     },
 
-    showTshirts: async (req, res)=>{
+    showProducts: async (req, res)=>{
         try {
-            let [resultado] = await db.query("SELECT * FROM tshirt");
-            res.render('admin/tshirt/list', {tshirts: resultado})
+            let [resultado] = await db.query("SELECT * FROM product");
+            res.render('admin/product/list', {products: resultado})
         } catch (error) {
              res.render('404', {
-                mensaje: 'Imposible to get tshirts'
+                mensaje: 'Imposible obtener productos'
             });
         }
         
     },
 
-    addTshirtGET: (req, res)=>{
-        res.render('admin/tshirt/add');
+    addProductGET: (req, res)=>{
+        res.render('admin/product/add');
     },
 
-    addTshirtPOST: (req, res)=>{
-        //console.log(req.body);
-        let {size, gender, color, brand, 
-            stock, price, active, image} = req.body;
+    addProductPOST: async (req, res)=>{
+        let {category, specs, brand, stock, price, active, image} = req.body;
         active = active == '1' || active === 1 ? 1 : 0;
 
-        let sql = 'INSERT INTO `tshirt`' +  '(size,gender,color,brand, stock, price, active, image) VALUES (?,?,?,?,?,?,?,?)';
-        db.query(sql, [size, gender, color, brand, 
-            stock, price, active, image], (error, resultado)=>{
-                if(error){
-                    res.render('error', {
-                        mensaje: 'Impossible to access the shirt '
-                    })
-                }else{
-                    //Lo hacemos manual
-                    window.location= '/admin/tshirt';
-                    
-                    //No funciona ya que la peticion se hace en segundo plano
-                    //el servidor devuelve un estado 302 pero NO hace que cambie
-                    //de endpoint, solo hace lo que se pide
-                    //res.redirect('/admin/tshirt');
-                }
-            })
-        res.redirect('/admin/tshirt');
-
-        
+        let sql = 'INSERT INTO `product`' +  '(category,specs,brand, stock, price, active, image) VALUES (?,?,?,?,?,?,?)';
+        try {
+            await db.query(sql, [category, specs, brand, stock, price, active, image]);
+            return res.redirect('/admin/products');
+        } catch (error) {
+            console.error(error);
+            return res.render('404', {
+                mensaje: 'No se pudo guardar el producto'
+            });
+        }
     },
 
-    // GET /admin/tshirt/update/:id → muestra el formulario con datos
-    updateTshirtGET: async (req, res) => {
+    updateProductGET: async (req, res) => {
         const { id } = req.params;
 
         try {
             let [resultado] = await db.query(
-                'SELECT * FROM tshirt WHERE id = ?',
+                'SELECT * FROM product WHERE id = ?',
                 [id]
             );
 
             if (resultado.length === 0) {
                 return res.render('404', {
-                    mensaje: 'Tshirt not found'
+                    mensaje: 'Producto no encontrado'
                 });
             }
 
-            res.render('admin/tshirt/update', {
-                tshirt: resultado[0]
+            res.render('admin/product/update', {
+                product: resultado[0]
             });
         } catch (error) {
             res.render('404', {
-                mensaje: 'Error getting tshirt for update'
+                mensaje: 'Error obteniendo producto para editar'
             });
         }
     },
 
-    // POST /admin/tshirt/update/:id → guarda cambios
-    updateTshirtPOST: async (req, res) => {
+    updateProductPOST: async (req, res) => {
         const { id } = req.params;
-        let { size, color, stock, price } = req.body;
+        let { category, specs, stock, price } = req.body;
 
-        // Validación simple
         stock = Number(stock);
         price = Number(price);
 
@@ -89,56 +74,54 @@ module.exports = {
             });
         }
 
-        const sql = 'UPDATE tshirt SET size = ?, color = ?, stock = ?, price = ? WHERE id = ?';
+        const sql = 'UPDATE product SET category = ?, specs = ?, stock = ?, price = ? WHERE id = ?';
 
         try {
-            await db.query(sql, [size, color, stock, price, id]);
+            await db.query(sql, [category, specs, stock, price, id]);
 
-            return res.redirect('/admin/tshirt');
+            return res.redirect('/admin/products');
         } catch (error) {
             console.error(error);
             return res.render('404', {
-                mensaje: 'Error updating tshirt'
+                mensaje: 'Error actualizando producto'
             });
         }
     },
 
-    // GET /admin/tshirt/delete/:id
-    deleteTshirtGET: async (req, res) => {
+    deleteProductGET: async (req, res) => {
         const { id } = req.params;
 
         try {
             let [resultado] = await db.query(
-                'SELECT * FROM tshirt WHERE id = ?',
+                'SELECT * FROM product WHERE id = ?',
                 [id]
             );
 
             if (resultado.length === 0) {
                 return res.render('404', {
-                    mensaje: 'Tshirt not found'
+                    mensaje: 'Producto no encontrado'
                 });
             }
 
-            res.render('admin/tshirt/delete', {
-                tshirt: resultado[0]
+            res.render('admin/product/delete', {
+                product: resultado[0]
             });
         } catch (error) {
             console.error(error);
             res.render('404', {
-                mensaje: 'Error getting tshirt for delete'
+                mensaje: 'Error obteniendo producto para eliminar'
             });
         }
     },
 
-    // POST /admin/tshirt/delete/:id
-    deleteTshirtPOST: async (req, res) => {
+    deleteProductPOST: async (req, res) => {
         const { id } = req.params;
-        const sqlDelete = 'DELETE FROM tshirt WHERE id = ?';
+        const sqlDelete = 'DELETE FROM product WHERE id = ?';
 
         try {
             // intentamos borrar
             await db.query(sqlDelete, [id]);
-            return res.redirect('/admin/tshirt');
+            return res.redirect('/admin/products');
 
         } catch (error) {
             console.error(error);
@@ -146,25 +129,25 @@ module.exports = {
             if (error.code === 'ER_ROW_IS_REFERENCED_2') {
                 try {
                     const [rows] = await db.query(
-                        'SELECT * FROM tshirt WHERE id = ?',
+                        'SELECT * FROM product WHERE id = ?',
                         [id]
                     );
 
                     if (rows.length === 0) {
-                        return res.redirect('/admin/tshirt');
+                        return res.redirect('/admin/products');
                     }
 
-                    return res.render('admin/tshirt/delete', {
-                        tshirt: rows[0],
-                        mensajeError: 'No se puede eliminar la camiseta porque tiene pedidos asociados.'
+                    return res.render('admin/product/delete', {
+                        product: rows[0],
+                        mensajeError: 'No se puede eliminar el producto porque tiene pedidos asociados.'
                     });
                 } catch (e2) {
                     console.error(e2);
-                    return res.redirect('/admin/tshirt');
+                    return res.redirect('/admin/products');
                 }
             }
 
-            return res.redirect('/admin/tshirt');
+            return res.redirect('/admin/products');
         }
     }
 };

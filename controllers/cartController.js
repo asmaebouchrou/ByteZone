@@ -67,7 +67,7 @@ module.exports = {
                             return CartModel.increaseQuantity(itemRows[0].id)
                                 .then(() => cart.id);
                         } else {
-                            return db.query("SELECT price FROM tshirt WHERE id = ?", [productId])
+                            return db.query("SELECT price FROM product WHERE id = ?", [productId])
                                 .then(([[product]]) => {
                                     if (!product) return res.redirect("/cart");
 
@@ -193,7 +193,7 @@ processBuy(req, res) {
 
                     const itemsHTML = items.map(i => `
                         <li>
-                            ${i.quantity} × ${i.brand} (${i.size}, ${i.color}) —
+                            ${i.quantity} x ${i.brand} (${i.category}, ${i.specs}) -
                             ${(Number(i.sale_price)).toFixed(2)} €
                         </li>
                     `).join("");
@@ -208,7 +208,7 @@ processBuy(req, res) {
                         <h3>Total: ${cart.total.toFixed(2)} €</h3>
 
                         <p>You will receive another email once your order is shipped.</p>
-                        <p>Thank you for shopping at T-Shirt Store!</p>
+                        <p>Thank you for shopping at ByteZone!</p>
                     `;
 
                     emailService.sendMail({

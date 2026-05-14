@@ -18,10 +18,10 @@
 | Método | Ruta                 | Descripción                                       | Vista                         | Auth |
 | :----: | :------------------- | :------------------------------------------------ | :---------------------------- | :--: |
 |   GET  | `/`                  | Landing page (productos destacados)               | `client/home.pug`            |   ✅  |
-|   GET  | `/tshirts`         | Listado general de tshirts (grid, filtros)      | `client/tshirt/list.pug`   |   ✅  |
-|   GET  | `/tshirts/:id`     | Detalle de camiseta con variantes (color, talla)  | `client/tshirt/detail.pug` |   ✅  |
-|   GET  | `/api/tshirts`     | Devuelve JSON con listado de tshirts            | —                             |   ❌  |
-|   GET  | `/api/tshirts/:id` | Devuelve JSON con detalle de camiseta y variantes | —                             |   ❌  |
+|   GET  | `/products`         | Listado general de productos informáticos       | `client/product/list.pug`   |   ✅  |
+|   GET  | `/products/:id`     | Detalle de componente o periférico              | `client/product/detail.pug` |   ✅  |
+|   GET  | `/api/products`     | Devuelve JSON con listado de productos          | —                             |   ❌  |
+|   GET  | `/api/products/:id` | Devuelve JSON con detalle de producto           | —                             |   ❌  |
 
 
 ## Asmae
@@ -43,11 +43,11 @@
 | Método | Ruta                       | Descripción                           | Vista                     |   Auth   |
 | :----: | :------------------------- | :------------------------------------ | :------------------------ | :------: |
 |   GET  | `/admin`                   | Dashboard principal del administrador | `admin/dashboard.pug`     | 🔒 Admin |
-|   GET  | `/admin/tshirt`            | Listado de tshirts                    | `admin/tshirt/list.pug`   | 🔒 Admin |
-|   GET  | `/admin/tshirt/add`        | Formulario para añadir camiseta       | `admin/tshirt/add.pug`    | 🔒 Admin |
-|  POST  | `/admin/tshirt/add`        | Insertar nueva camiseta en la BD      | —                         | 🔒 Admin |
-|   GET  | `/admin/tshirt/update/:id` | Formulario para editar camiseta       | `admin/tshirt/update.pug` | 🔒 Admin |
-|  POST  | `/admin/tshirt/update/:id` | Actualizar camiseta                   | —                         | 🔒 Admin |
-|  POST  | `/admin/tshirt/delete/:id` | Eliminar camiseta                     | —                         | 🔒 Admin |
+|   GET  | `/admin/products`            | Listado de productos                  | `admin/product/list.pug`   | 🔒 Admin |
+|   GET  | `/admin/products/add`        | Formulario para añadir producto       | `admin/product/add.pug`    | 🔒 Admin |
+|  POST  | `/admin/products/add`        | Insertar nuevo producto en la BD      | —                         | 🔒 Admin |
+|   GET  | `/admin/products/update/:id` | Formulario para editar producto       | `admin/product/update.pug` | 🔒 Admin |
+|  POST  | `/admin/products/update/:id` | Actualizar producto                   | —                         | 🔒 Admin |
+|  POST  | `/admin/products/delete/:id` | Eliminar producto                     | —                         | 🔒 Admin |
 |   GET  | `/admin/user`              | Listado de usuarios                   | `admin/user/list.pug`     | 🔒 Admin |
 |   GET  | `/admin/order`             | Listado de pedidos                    | `admin/order/list.pug`    | 🔒 Admin |

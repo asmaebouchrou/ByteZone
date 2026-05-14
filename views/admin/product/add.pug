@@ -1,0 +1,57 @@
+extends ../../layouts/generalLayout
+
+block extraHead
+  link(rel="stylesheet", href="/css/admin.css")
+
+block content
+  section.admin-section
+    .section-header
+      h1 Añadir producto
+      a.btn-secondary(href="/admin/products") Volver al listado
+
+    form.admin-form(action="/admin/products/add" method="POST")
+      .form-group
+        label(for="category") Categoría
+        select(name="category" id="category" required)
+          option(value="" disabled selected) Selecciona una categoría
+          option(value="ram") RAM
+          option(value="ssd") SSD
+          option(value="processor") Procesador
+          option(value="graphics_card") Tarjeta gráfica
+          option(value="motherboard") Placa base
+          option(value="power_supply") Fuente de alimentación
+          option(value="case") Caja
+          option(value="cooling") Refrigeración
+          option(value="monitor") Monitor
+          option(value="keyboard") Teclado
+          option(value="mouse") Ratón
+          option(value="headset") Auriculares
+          option(value="accessory") Accesorio
+
+      .form-group
+        label(for="specs") Especificaciones
+        input(type="text" name="specs" id="specs" placeholder="ej. 32GB DDR5 6000MHz" required)
+
+      .form-group
+        label(for="brand") Marca
+        input(type="text" name="brand" id="brand" placeholder="ej. Corsair" required)
+
+      .form-group
+        label(for="stock") Stock
+        input(type="number" name="stock" id="stock" min="0" value="0" max="1000" required)
+
+      .form-group
+        label(for="price") Precio (€)
+        input(type="number" name="price" id="price" step="0.01" min="0" required)
+
+      .form-group
+        label(for="active") Activo
+        select(name="active" id="active" required)
+          option(value="1") Sí
+          option(value="0") No
+
+      .form-group
+        label(for="image") URL de imagen
+        input(type="text" name="image" id="image" placeholder="https://example.com/foto.jpg")
+
+      button.btn-primary(type="submit") Guardar producto

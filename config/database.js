@@ -1,5 +1,5 @@
 const mysql = require ('mysql2');
-require('dotenv').config({path: 'stack-tshirts/.env'});
+require('dotenv').config({path: 'stack-bytezone/.env'});
 
 const db = mysql.createConnection({
     host: process.env.MYSQL_HOST,

@@ -1,6 +1,5 @@
-version: "3.1"
 services: 
-  tshirts:
+  bytezone-db:
     image: mysql:latest
     restart: "no"
     environment:
@@ -15,4 +14,3 @@ services:
     restart: "no"
     ports:
       - ${ADMINER_HOST_PORT}:${ADMINER_CONTAINER_PORT}    
-

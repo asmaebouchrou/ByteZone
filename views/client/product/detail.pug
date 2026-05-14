@@ -1,0 +1,21 @@
+extends ../../layouts/generalLayout.pug
+
+block extraHead
+  link(rel="stylesheet", href="/css/products.css")
+
+block content
+  .product-detail
+    each product in detalle
+      .detail-card
+        .detail-image
+          img(src=product.image || "/images/product1.webp", alt=product.brand || "Producto informático")
+        .detail-info
+          h1= product.brand || 'Producto'
+          p.detail-meta #{product.categoryLabel || 'Hardware'} · #{product.specs || 'Especificaciones'}
+          - const priceValue = typeof product.price === 'number' ? `${product.price.toFixed(2)} €` : (product.price ? `${product.price} €` : 'Próximamente')
+          p.detail-price #{priceValue}
+          p.detail-stock Stock: #{product.stock || '-'}
+          .detail-actions
+            a.btn-primary(href=`/cart/add/product/${product.id}`) Añadir al carrito
+            a.btn-secondary(href="/products") Seguir comprando
+          p.detail-category Categoría: #{product.categoryLabel || 'Hardware'}

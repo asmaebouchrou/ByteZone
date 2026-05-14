@@ -12,9 +12,10 @@ const authRoutes = require('./routes/authRouter');
 const profileRoutes = require('./routes/profileRouter')
 const adminUserRoutes = require('./routes/adminUserRouter');
 const adminRoutes = require('./routes/adminRouter');
-const tshirtsRoutes = require('./routes/tshirtsRouter');
+const productsRoutes = require('./routes/productsRouter');
 const cartRoutes = require('./routes/cart.routes');
 const orderRoutes = require('./routes/order.routes');
+const pagesRoutes = require('./routes/pages.routes');
 
 
 
@@ -36,7 +37,7 @@ app.use(bodyParser.json());
 //SESSION CONFIG
 app.use(
   session({
-    secret: 'tshirt-secret',
+    secret: 'bytezone-secret',
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -53,7 +54,8 @@ app.use('/auth', authRoutes);
 app.use('/profile',isAuthenticated, profileRoutes);
 
 app.use('/profile', isAuthenticated, profileRoutes);
-app.use('/tshirt', tshirtsRoutes);
+app.use('/products', productsRoutes);
+app.use('/', pagesRoutes);
 
 // Rutas que hace falta estar loggeado
 // app.use('/profile', isAuthenticated, profileRoutes);

@@ -14,8 +14,8 @@ block content
         thead
           tr
             th Producto
-            th Color
-            th Talla
+            th Categoría
+            th Especificaciones
             th Cantidad
             th Precio
             th Subtotal
@@ -23,8 +23,8 @@ block content
           each item in items
             tr
               td.item-name= item.brand
-              td= item.color
-              td= item.size
+              td= item.category
+              td= item.specs
               td= item.quantity
               td= item.sale_price.toFixed(2) + " €"
               td= (item.sale_price * item.quantity).toFixed(2) + " €"
