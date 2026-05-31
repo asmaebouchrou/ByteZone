@@ -86,8 +86,10 @@ app.get('/index', (req, res) => {
 });
 
 //SERVER START
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+app.locals.server = server;
 
 module.exports = app;

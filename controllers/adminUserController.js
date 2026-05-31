@@ -136,14 +136,44 @@ module.exports = {
 
   deleteUser: async (req, res) => {
     const { id } = req.params;
+    let connection;
 
     try {
-      await db.query('DELETE FROM password WHERE user_id = ?', [id]);
-      await db.query('DELETE FROM user WHERE id = ?', [id]);
+      connection = await db.getConnection();
+      await connection.beginTransaction();
+
+      await connection.query(
+        `DELETE p
+         FROM payment p
+         INNER JOIN customer_order co ON p.customer_order_id = co.id
+         WHERE co.client = ?`,
+        [id]
+      );
+
+      await connection.query('DELETE FROM customer_order WHERE client = ?', [id]);
+      await connection.query('DELETE FROM payment_method WHERE user_id = ?', [id]);
+      await connection.query('DELETE FROM reset_tokens WHERE user_id = ?', [id]);
+      await connection.query('DELETE FROM password WHERE user_id = ?', [id]);
+
+      const [deleteResult] = await connection.query('DELETE FROM user WHERE id = ?', [id]);
+
+      if (deleteResult.affectedRows === 0) {
+        await connection.rollback();
+        return res.status(404).send('Usuario no encontrado');
+      }
+
+      await connection.commit();
       return res.redirect('/admin/user');
     } catch (err) {
+      if (connection) {
+        await connection.rollback();
+      }
       console.error('Error al eliminar usuario:', err);
       return res.status(500).send('Error al eliminar usuario');
+    } finally {
+      if (connection) {
+        connection.release();
+      }
     }
   }
 };
